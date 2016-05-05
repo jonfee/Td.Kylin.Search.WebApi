@@ -1,27 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Td.Kylin.Search.WebApi.Core;
 
 namespace Td.Kylin.Search.WebApi
 {
     public class Startup
     {
+        //wwwroot的根目录
+        public static string WebRootPath { get; set; }
+
         public Startup(IHostingEnvironment env)
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
+
+            WebRootPath = env.WebRootPath;
+
             Configuration = builder.Build();
+
+            IndexManager.Instance.StartNewThread();
         }
 
-        public IConfigurationRoot Configuration { get; set; }
+        public static IConfigurationRoot Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "compilationOptions": {
     "emitEntryPoint": true
@@ -21,8 +21,14 @@
   },
 
   "frameworks": {
-    "dnx451": { },
-    "dnxcore50": { }
+    "dnx451": {
+      "dependencies": {
+        "Lucene.Net": "1.0.0-*",
+        "PanGu": "1.0.0-*",
+        "PanGu.HighLight": "1.0.0-*",
+        "PanGu.Lucene.Analyzer": "1.0.0-*"
+      }
+    }
   },
 
   "exclude": [
