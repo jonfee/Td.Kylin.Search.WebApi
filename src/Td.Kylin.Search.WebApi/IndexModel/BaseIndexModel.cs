@@ -16,7 +16,7 @@ namespace Td.Kylin.Search.WebApi.IndexModel
         /// <summary>
         /// 数据类型
         /// </summary>
-        public DataType DataType { get; set; }
+        public IndexDataType DataType { get; set; }
 
         /// <summary>
         /// 所属区域ID
@@ -47,5 +47,10 @@ namespace Td.Kylin.Search.WebApi.IndexModel
         /// 更新时间
         /// </summary>
         public DateTime UpdateTime { get; set; }
+
+        /// <summary>
+        /// 数据描述（多属性组合而成）
+        /// </summary>
+        public string Desc { get; set; }
     }
 }

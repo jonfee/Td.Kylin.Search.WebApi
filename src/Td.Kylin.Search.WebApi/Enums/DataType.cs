@@ -3,7 +3,7 @@
     /// <summary>
     /// 数据类型
     /// </summary>
-    public enum DataType
+    public enum IndexDataType
     {
         /// <summary>
         /// 精品汇商品

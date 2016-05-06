@@ -3,7 +3,9 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Td.Kylin.DataCache;
 using Td.Kylin.Search.WebApi.Core;
+using Td.Kylin.WebApi;
 
 namespace Td.Kylin.Search.WebApi
 {
@@ -38,8 +40,15 @@ namespace Td.Kylin.Search.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            //loggerFactory.AddDebug();
+
+            string redisConn = Configuration["Redis:ConnectString"];//Redis缓存服务器信息
+            var SqlConn = Configuration["Data:DefaultConnection:ConnectionString"];
+
+            app.UseDataCache(redisConn, DataCache.SqlProviderType.PostgreSQL, SqlConn);
+
+            app.UseKylinWebApi(Configuration);
 
             app.UseIISPlatformHandler();
 

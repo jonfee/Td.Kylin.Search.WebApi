@@ -10,7 +10,7 @@ namespace Td.Kylin.Search.WebApi.Core
         /// <summary>
         /// 数据类型
         /// </summary>
-        public DataType DataType { get; set; }
+        public IndexDataType DataType { get; set; }
 
         /// <summary>
         /// 索引操作类型
@@ -21,6 +21,11 @@ namespace Td.Kylin.Search.WebApi.Core
         /// 主键ID
         /// </summary>
         public long ID { get; set; }
+
+        /// <summary>
+        /// 区域ID
+        /// </summary>
+        public int AreaID { get; set; }
 
         /// <summary>
         /// 数据对象

@@ -2,8 +2,13 @@
 
 namespace Td.Kylin.Search.WebApi.Core
 {
-    public class IndexPathConfiguration
+    public class IndexConfiguration
     {
+        /// <summary>
+        /// 分词版本
+        /// </summary>
+        public static Lucene.Net.Util.Version LuceneMatchVersion { get { return Lucene.Net.Util.Version.LUCENE_29; } }
+
         /// <summary>
         /// 索引文件根目录
         /// </summary>
@@ -18,7 +23,7 @@ namespace Td.Kylin.Search.WebApi.Core
         {
             string path = string.Format(@"area\{0}", areaID);
 
-            return Path.Combine(Startup.WebRootPath,indexRoot, path);
+            return Path.Combine(Startup.WebRootPath, indexRoot, path);
         }
 
         /// <summary>
@@ -60,7 +65,7 @@ namespace Td.Kylin.Search.WebApi.Core
         /// <returns></returns>
         public static string GetJobPath()
         {
-            string path = @"merchant";
+            string path = @"job";
 
             return Path.Combine(Startup.WebRootPath, indexRoot, path);
         }

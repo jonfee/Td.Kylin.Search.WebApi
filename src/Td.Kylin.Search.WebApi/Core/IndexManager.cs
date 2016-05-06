@@ -1,4 +1,5 @@
 ﻿using Lucene.Net.Analysis.PanGu;
+using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Store;
@@ -8,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Td.Common;
+using Td.Kylin.EnumLibrary;
 using Td.Kylin.Search.WebApi.Enums;
 using Td.Kylin.Search.WebApi.IndexModel;
 
@@ -21,6 +24,11 @@ namespace Td.Kylin.Search.WebApi.Core
         private volatile static IndexManager _instance;
 
         private static readonly object mylock = new object();
+
+        /// <summary>
+        /// 队列是否正在处理
+        /// </summary>
+        private volatile static bool queueInProcessing = false;
 
         public static IndexManager Instance
         {
@@ -65,8 +73,25 @@ namespace Td.Kylin.Search.WebApi.Core
                 model.Data = item;
                 model.DataType = item.DataType;
                 model.ID = item.ID;
+                model.AreaID = item.AreaID;
 
                 indexQueue.Enqueue(model);
+            }
+        }
+
+        /// <summary>
+        /// 将新文件添加到队列结尾
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        public void Insert<T>(IEnumerable<T> collection) where T : BaseIndexModel
+        {
+            if (null != collection)
+            {
+                foreach (var item in collection)
+                {
+                    Insert(item);
+                }
             }
         }
 
@@ -84,6 +109,44 @@ namespace Td.Kylin.Search.WebApi.Core
                 model.Data = item;
                 model.DataType = item.DataType;
                 model.ID = item.ID;
+                model.AreaID = item.AreaID;
+
+                indexQueue.Enqueue(model);
+            }
+        }
+
+        /// <summary>
+        /// 将更新文件添加到队列结尾
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        public void Modify<T>(IEnumerable<T> collection) where T : BaseIndexModel
+        {
+            if (null != collection)
+            {
+                foreach (var item in collection)
+                {
+                    Modify(item);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 将删除文件添加到队列结尾
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="areaID"></param>
+        /// <param name="id"></param>
+        public void Delete(IndexDataType dataType, int areaID, long id)
+        {
+            if (id > 0)
+            {
+                QueueModel model = new QueueModel();
+                model.ActionMode = ActionMode.Delete;
+                model.Data = null;
+                model.DataType = dataType;
+                model.ID = id;
+                model.AreaID = areaID;
 
                 indexQueue.Enqueue(model);
             }
@@ -93,25 +156,23 @@ namespace Td.Kylin.Search.WebApi.Core
         /// 将删除文件添加到队列结尾
         /// </summary>
         /// <param name="dataType"></param>
-        /// <param name="id"></param>
-        public void Delete(DataType dataType, long id)
+        /// <param name="areaID"></param>
+        /// <param name="ids"></param>
+        public void Delete(IndexDataType dataType, int areaID, IEnumerable<long> ids)
         {
-            if (id > 0)
+            if (null != ids)
             {
-                QueueModel model = new QueueModel();
-                model.ActionMode = ActionMode.Insert;
-                model.Data = null;
-                model.DataType = dataType;
-                model.ID = id;
-
-                indexQueue.Enqueue(model);
+                foreach (var id in ids)
+                {
+                    Delete(dataType, areaID, id);
+                }
             }
         }
 
         /// <summary>
         /// 开启新线程处理索引队列
         /// </summary>
-        public void StartNewThread() 
+        public void StartNewThread()
         {
             ThreadPool.QueueUserWorkItem(new WaitCallback(QueueToIndex));
         }
@@ -124,13 +185,13 @@ namespace Td.Kylin.Search.WebApi.Core
         {
             while (true)
             {
-                if (indexQueue.Count > 0)
+                if (indexQueue.Count > 0 && queueInProcessing == false)
                 {
                     IndexDoWork();
                 }
                 else
                 {
-                    Thread.Sleep(5000);
+                    Thread.Sleep(3000);
                 }
             }
         }
@@ -140,6 +201,9 @@ namespace Td.Kylin.Search.WebApi.Core
         /// </summary>
         private void IndexDoWork()
         {
+            //处理中
+            queueInProcessing = true;
+             
             #region 
             Dictionary<int, FSDirectory> dicAreaDirectory = new Dictionary<int, FSDirectory>();
             FSDirectory mallproductDirectory = null;
@@ -158,31 +222,35 @@ namespace Td.Kylin.Search.WebApi.Core
             {
                 QueueModel model = indexQueue.Dequeue();
 
+                if (null == model) continue;
+
                 var data = model.Data as BaseIndexModel;
+
+                if (model.ActionMode != ActionMode.Delete && data == null) continue;
 
                 #region//当前索引需要用到的区域 FSDirectory 文件
                 FSDirectory areaDirectory = null;
-                if (dicAreaDirectory.ContainsKey(data.AreaID))
+                if (dicAreaDirectory.ContainsKey(model.AreaID))
                 {
-                    areaDirectory = dicAreaDirectory[data.AreaID];
+                    areaDirectory = dicAreaDirectory[model.AreaID];
                 }
                 else
                 {
-                    areaDirectory = FSDirectory.Open(new DirectoryInfo(IndexPathConfiguration.GetAreaPath(data.AreaID)), new NativeFSLockFactory());
-                    dicAreaDirectory.Add(data.AreaID, areaDirectory);
+                    areaDirectory = FSDirectory.Open(new DirectoryInfo(IndexConfiguration.GetAreaPath(model.AreaID)), new NativeFSLockFactory());
+                    dicAreaDirectory.Add(model.AreaID, areaDirectory);
                 }
                 #endregion
                 #region//当前索引需要用到的区域 IndexWriter
                 IndexWriter areaWriter = null;
-                if (dicAreaWriter.ContainsKey(data.AreaID))
+                if (dicAreaWriter.ContainsKey(model.AreaID))
                 {
-                    areaWriter = dicAreaWriter[data.AreaID];
+                    areaWriter = dicAreaWriter[model.AreaID];
                 }
                 else
                 {
                     bool isExist = IsIndexExists(areaDirectory, true);
-                    areaWriter = new IndexWriter(mallproductDirectory, new PanGuAnalyzer(), !isExist, IndexWriter.MaxFieldLength.UNLIMITED);
-                    dicAreaWriter.Add(data.AreaID, areaWriter);
+                    areaWriter = new IndexWriter(areaDirectory, new StandardAnalyzer(IndexConfiguration.LuceneMatchVersion), !isExist, IndexWriter.MaxFieldLength.UNLIMITED);
+                    dicAreaWriter.Add(model.AreaID, areaWriter);
                 }
                 #endregion
 
@@ -191,11 +259,11 @@ namespace Td.Kylin.Search.WebApi.Core
                 {
                     var mallProduct = (MallProduct)data;
 
-                    if (null == mallproductDirectory) mallproductDirectory = FSDirectory.Open(new DirectoryInfo(IndexPathConfiguration.GetMallProductPath()), new NativeFSLockFactory());
+                    if (null == mallproductDirectory) mallproductDirectory = FSDirectory.Open(new DirectoryInfo(IndexConfiguration.GetMallProductPath()), new NativeFSLockFactory());
                     if (null == mallproductWriter)
                     {
                         bool isExist = IsIndexExists(mallproductDirectory, true);
-                        mallproductWriter = new IndexWriter(mallproductDirectory, new PanGuAnalyzer(), !isExist, IndexWriter.MaxFieldLength.UNLIMITED);
+                        mallproductWriter = new IndexWriter(mallproductDirectory, new StandardAnalyzer(IndexConfiguration.LuceneMatchVersion), !isExist, IndexWriter.MaxFieldLength.UNLIMITED);
                     }
 
                     switch (model.ActionMode)
@@ -220,11 +288,11 @@ namespace Td.Kylin.Search.WebApi.Core
                 {
                     var merchantProduct = (MerchantProduct)data;
 
-                    if (null == merchantproductDirectory) merchantproductDirectory = FSDirectory.Open(new DirectoryInfo(IndexPathConfiguration.GetMerchantProductPath()), new NativeFSLockFactory());
+                    if (null == merchantproductDirectory) merchantproductDirectory = FSDirectory.Open(new DirectoryInfo(IndexConfiguration.GetMerchantProductPath()), new NativeFSLockFactory());
                     if (null == merchantproductWriter)
                     {
                         bool isExist = IsIndexExists(merchantproductDirectory, true);
-                        merchantproductWriter = new IndexWriter(merchantproductDirectory, new PanGuAnalyzer(), !isExist, IndexWriter.MaxFieldLength.UNLIMITED);
+                        merchantproductWriter = new IndexWriter(merchantproductDirectory, new StandardAnalyzer(IndexConfiguration.LuceneMatchVersion), !isExist, IndexWriter.MaxFieldLength.UNLIMITED);
                     }
 
                     switch (model.ActionMode)
@@ -249,11 +317,11 @@ namespace Td.Kylin.Search.WebApi.Core
                 {
                     var merchant = (Merchant)data;
 
-                    if (null == merchantDirectory) merchantDirectory = FSDirectory.Open(new DirectoryInfo(IndexPathConfiguration.GetMerchantPath()), new NativeFSLockFactory());
+                    if (null == merchantDirectory) merchantDirectory = FSDirectory.Open(new DirectoryInfo(IndexConfiguration.GetMerchantPath()), new NativeFSLockFactory());
                     if (null == merchantWriter)
                     {
                         bool isExist = IsIndexExists(merchantDirectory, true);
-                        merchantWriter = new IndexWriter(merchantDirectory, new PanGuAnalyzer(), !isExist, IndexWriter.MaxFieldLength.UNLIMITED);
+                        merchantWriter = new IndexWriter(merchantDirectory, new StandardAnalyzer(IndexConfiguration.LuceneMatchVersion), !isExist, IndexWriter.MaxFieldLength.UNLIMITED);
                     }
 
                     switch (model.ActionMode)
@@ -278,11 +346,11 @@ namespace Td.Kylin.Search.WebApi.Core
                 {
                     var job = (Job)data;
 
-                    if (null == jobDirectory) jobDirectory = FSDirectory.Open(new DirectoryInfo(IndexPathConfiguration.GetJobPath()), new NativeFSLockFactory());
+                    if (null == jobDirectory) jobDirectory = FSDirectory.Open(new DirectoryInfo(IndexConfiguration.GetJobPath()), new NativeFSLockFactory());
                     if (null == jobWriter)
                     {
                         bool isExist = IsIndexExists(jobDirectory, true);
-                        jobWriter = new IndexWriter(jobDirectory, new PanGuAnalyzer(), !isExist, IndexWriter.MaxFieldLength.UNLIMITED);
+                        jobWriter = new IndexWriter(jobDirectory, new StandardAnalyzer(IndexConfiguration.LuceneMatchVersion), !isExist, IndexWriter.MaxFieldLength.UNLIMITED);
                     }
 
                     switch (model.ActionMode)
@@ -293,11 +361,11 @@ namespace Td.Kylin.Search.WebApi.Core
                             break;
                         case ActionMode.Insert:
                             AddIndexByJob(areaWriter, job);
-                            AddIndexByJob(merchantWriter, job);
+                            AddIndexByJob(jobWriter, job);
                             break;
                         case ActionMode.Modify:
                             ModifyIndexByJob(areaWriter, job);
-                            ModifyIndexByJob(merchantWriter, job);
+                            ModifyIndexByJob(jobWriter, job);
                             break;
                     }
                 }
@@ -306,23 +374,47 @@ namespace Td.Kylin.Search.WebApi.Core
 
             foreach (var wrt in dicAreaWriter.Values)
             {
-                wrt.Close();
+                wrt.Optimize();
+                wrt.Commit();
+                wrt.Dispose();
             }
 
             foreach (var dir in dicAreaDirectory.Values)
             {
-                dir.Close();
+                dir.Dispose();
             }
 
-            if (mallproductWriter != null) mallproductWriter.Close();
-            if (merchantproductWriter != null) merchantproductWriter.Close();
-            if (merchantWriter != null) merchantWriter.Close();
-            if (jobWriter != null) jobWriter.Close();
+            if (mallproductWriter != null)
+            {
+                mallproductWriter.Optimize();
+                mallproductWriter.Commit();
+                mallproductWriter.Dispose();
+            }
+            if (merchantproductWriter != null)
+            {
+                merchantproductWriter.Optimize();
+                merchantproductWriter.Commit();
+                merchantproductWriter.Dispose();
+            }
+            if (merchantWriter != null)
+            {
+                merchantWriter.Optimize();
+                merchantWriter.Commit();
+                merchantWriter.Dispose();
+            }
+            if (jobWriter != null)
+            {
+                jobWriter.Optimize();
+                jobWriter.Commit();
+                jobWriter.Dispose();
+            }
 
-            if (mallproductDirectory != null) mallproductDirectory.Close();
-            if (merchantproductDirectory != null) merchantproductDirectory.Close();
-            if (merchantDirectory != null) merchantDirectory.Close();
-            if (jobDirectory != null) jobDirectory.Close();
+            if (mallproductDirectory != null) mallproductDirectory.Dispose();
+            if (merchantproductDirectory != null) merchantproductDirectory.Dispose();
+            if (merchantDirectory != null) merchantDirectory.Dispose();
+            if (jobDirectory != null) jobDirectory.Dispose();
+
+            queueInProcessing = false;
         }
 
         #region 添加数据到索引文件
@@ -339,19 +431,20 @@ namespace Td.Kylin.Search.WebApi.Core
             document.Add(new Field("id", item.ID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("datatype", item.DataType.ToString("d"), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("areaid", item.AreaID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("arealayer", item.AreaLayer, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("name", item.Name, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("pic", item.Pic, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("arealayer", item.AreaLayer ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("name", item.Name ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("pic", item.Pic ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("createtime", item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("updatetime", item.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss"), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("desc", string.Format("{0},{1},{2},{3}", item.Specs, item.SKU, item.CategoryName, item.TagNames), Field.Store.YES, Field.Index.ANALYZED));
 
             document.Add(new Field("productid", item.ProductID.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("specs", item.Specs, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("sku", item.SKU, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("specs", item.Specs ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("sku", item.SKU ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("categoryid", item.CategoryID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("categoryname", item.CategoryName, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("tagids", item.TagIDs, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("tagnames", item.TagNames, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("categoryname", item.CategoryName ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("tagids", item.TagIDs ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("tagnames", item.TagNames ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("marketprice", item.MarketPrice.ToString("0.00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("saleprice", item.SalePrice.ToString("0.00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
@@ -363,24 +456,25 @@ namespace Td.Kylin.Search.WebApi.Core
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="item"></param>
-        private void AddIndexByMerchantProduct(IndexWriter writer,MerchantProduct item)
+        private void AddIndexByMerchantProduct(IndexWriter writer, MerchantProduct item)
         {
             Document document = new Document();
 
             document.Add(new Field("id", item.ID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("datatype", item.DataType.ToString("d"), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("areaid", item.AreaID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("arealayer", item.AreaLayer, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("name", item.Name, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("pic", item.Pic, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("arealayer", item.AreaLayer ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("name", item.Name ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("pic", item.Pic ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("createtime", item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("updatetime", item.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss"), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("desc", string.Format("{0},{1},{2}", item.MerchantName, item.Specification, item.SystemCategoryName), Field.Store.YES, Field.Index.ANALYZED));
 
             document.Add(new Field("merchantid", item.MerchantID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("merchantname", item.MerchantName, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("specification", item.Specification, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("merchantname", item.MerchantName ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("specification", item.Specification ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("systemcategoryid", item.SystemCategoryID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("systemcategoryname", item.SystemCategoryName, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("systemcategoryname", item.SystemCategoryName ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("latitude", item.Latitude.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("longitude", item.Longitude.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("originalprice", item.OriginalPrice.ToString("0.00"), Field.Store.YES, Field.Index.NOT_ANALYZED));
@@ -401,24 +495,25 @@ namespace Td.Kylin.Search.WebApi.Core
             document.Add(new Field("id", item.ID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("datatype", item.DataType.ToString("d"), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("areaid", item.AreaID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("arealayer", item.AreaLayer, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("name", item.Name, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("pic", item.Pic, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("arealayer", item.AreaLayer ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("name", item.Name ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("pic", item.Pic ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("createtime", item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("updatetime", item.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss"), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            
+            document.Add(new Field("desc", string.Format("{0},{1},{2},{3}", item.IndustryName, item.LocationPlace, item.Street, item.LinkMan), Field.Store.YES, Field.Index.ANALYZED));
+
             document.Add(new Field("latitude", item.Latitude.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("longitude", item.Longitude.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("Mobile", item.Mobile, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("Mobile", item.Mobile ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("IndustryID", item.IndustryID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("IndustryName", item.IndustryName, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("LocationPlace", item.LocationPlace, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("Street", item.Street, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("LinkMan", item.LinkMan, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("Phone", item.Phone, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("IndustryName", item.IndustryName ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("LocationPlace", item.LocationPlace ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("Street", item.Street ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("LinkMan", item.LinkMan ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("Phone", item.Phone ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("CertificateStatus", item.CertificateStatus.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("BusinessBeginTime", item.BusinessBeginTime, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("BusinessEndTime", item.BusinessEndTime, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("BusinessBeginTime", item.BusinessBeginTime ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("BusinessEndTime", item.BusinessEndTime ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
 
             writer.AddDocument(document);
         }
@@ -432,19 +527,34 @@ namespace Td.Kylin.Search.WebApi.Core
         {
             Document document = new Document();
 
+            //工作性质
+            string jobtype = EnumUtility.GetEnumDescription<JobNature>(item.JobType);
+            //最低学历
+            string education = EnumUtility.GetEnumDescription<Education>(item.MinEducation);
+            //福利
+            List<string> welfares = new List<string>();
+            foreach (var kv in EnumUtility.GetEnumDescriptions(typeof(JobWelfare)))
+            {
+                if ((item.Welfares & kv.Key) == kv.Key)
+                {
+                    welfares.Add(kv.Value);
+                }
+            }
+
             document.Add(new Field("id", item.ID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("datatype", item.DataType.ToString("d"), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("areaid", item.AreaID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("arealayer", item.AreaLayer, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("name", item.Name, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("pic", item.Pic, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("arealayer", item.AreaLayer ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("name", item.Name ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("pic", item.Pic ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("createtime", item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("updatetime", item.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss"), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("desc", string.Format("{0},{1},{2},{3},{4}", item.MerchantName, item.WordAddress, jobtype, education, string.Join(",", welfares)), Field.Store.YES, Field.Index.ANALYZED));
 
             document.Add(new Field("latitude", item.Latitude.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("longitude", item.Longitude.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("merchantid", item.MerchantID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("merchantname", item.MerchantName, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("merchantname", item.MerchantName ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("categoryid", item.CategoryID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("count", item.Count.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("minmonthly", item.MinMonthly.ToString(), Field.Store.YES, Field.Index.ANALYZED));
@@ -457,7 +567,7 @@ namespace Td.Kylin.Search.WebApi.Core
             document.Add(new Field("minjobyearstype", item.MinJobYearsType.ToString(), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("jobtype", item.JobType.ToString(), Field.Store.YES, Field.Index.ANALYZED));
             document.Add(new Field("welfares", item.Welfares.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("wordaddress", item.WordAddress.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("wordaddress", item.WordAddress ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
 
             writer.AddDocument(document);
         }
@@ -473,7 +583,11 @@ namespace Td.Kylin.Search.WebApi.Core
         /// <param name="id"></param>
         private void DeleteIndex(IndexWriter writer, long id)
         {
-            writer.DeleteDocuments(new Term("id", id.ToString()));
+            try
+            {
+                writer.DeleteDocuments(new Term("id", id.ToString()));
+            }
+            catch { }
         }
 
         #endregion

@@ -9,11 +9,18 @@
     "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
     "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
     "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final",
-    "Microsoft.Extensions.Configuration.FileProviderExtensions" : "1.0.0-rc1-final",
+    "Microsoft.Extensions.Configuration.FileProviderExtensions": "1.0.0-rc1-final",
     "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final"
+    "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
+    "Td.CoreLibrary": "1.1.2-beta",
+    "Td.Kylin.DataCache": "1.0.6-rc1",
+    "Td.Kylin.Entity": "1.0.0-rc1-28",
+    "Td.Kylin.EnumLibrary": "1.0.31-beta",
+    "Td.Kylin.WebApi": "1.0.0-rc1-85",
+    "z.PanGu.HighLight": "1.0.0.1",
+    "z.PanGu.Lucene.Analyzer": "2.4.1.3"
   },
 
   "commands": {
@@ -21,14 +28,7 @@
   },
 
   "frameworks": {
-    "dnx451": {
-      "dependencies": {
-        "Lucene.Net": "1.0.0-*",
-        "PanGu": "1.0.0-*",
-        "PanGu.HighLight": "1.0.0-*",
-        "PanGu.Lucene.Analyzer": "1.0.0-*"
-      }
-    }
+    "dnx451": {}
   },
 
   "exclude": [
