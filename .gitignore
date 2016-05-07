@@ -110,3 +110,4 @@ UpgradeLog*.XML
 
 wwwroot/luceneindex/
 
+src/Td.Kylin.Search.WebApi/wwwroot/luceneindex/
