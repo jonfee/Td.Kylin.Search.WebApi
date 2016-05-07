@@ -203,7 +203,7 @@ namespace Td.Kylin.Search.WebApi.Core
         {
             //处理中
             queueInProcessing = true;
-             
+
             #region 
             Dictionary<int, FSDirectory> dicAreaDirectory = new Dictionary<int, FSDirectory>();
             FSDirectory mallproductDirectory = null;
@@ -372,47 +372,16 @@ namespace Td.Kylin.Search.WebApi.Core
                 #endregion
             }
 
-            foreach (var wrt in dicAreaWriter.Values)
+            foreach (var kv in dicAreaWriter)
             {
-                wrt.Optimize();
-                wrt.Commit();
-                wrt.Dispose();
+                var dir = dicAreaDirectory.ContainsKey(kv.Key) ? dicAreaDirectory[kv.Key] : null;
+                CloseWriter(dir, kv.Value);
             }
 
-            foreach (var dir in dicAreaDirectory.Values)
-            {
-                dir.Dispose();
-            }
-
-            if (mallproductWriter != null)
-            {
-                mallproductWriter.Optimize();
-                mallproductWriter.Commit();
-                mallproductWriter.Dispose();
-            }
-            if (merchantproductWriter != null)
-            {
-                merchantproductWriter.Optimize();
-                merchantproductWriter.Commit();
-                merchantproductWriter.Dispose();
-            }
-            if (merchantWriter != null)
-            {
-                merchantWriter.Optimize();
-                merchantWriter.Commit();
-                merchantWriter.Dispose();
-            }
-            if (jobWriter != null)
-            {
-                jobWriter.Optimize();
-                jobWriter.Commit();
-                jobWriter.Dispose();
-            }
-
-            if (mallproductDirectory != null) mallproductDirectory.Dispose();
-            if (merchantproductDirectory != null) merchantproductDirectory.Dispose();
-            if (merchantDirectory != null) merchantDirectory.Dispose();
-            if (jobDirectory != null) jobDirectory.Dispose();
+            CloseWriter(mallproductDirectory, mallproductWriter);
+            CloseWriter(merchantproductDirectory, merchantproductWriter);
+            CloseWriter(merchantDirectory, merchantWriter);
+            CloseWriter(jobDirectory, jobWriter);
 
             queueInProcessing = false;
         }
@@ -504,16 +473,16 @@ namespace Td.Kylin.Search.WebApi.Core
 
             document.Add(new Field("latitude", item.Latitude.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("longitude", item.Longitude.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("Mobile", item.Mobile ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("IndustryID", item.IndustryID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("IndustryName", item.IndustryName ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
-            document.Add(new Field("LocationPlace", item.LocationPlace ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("Street", item.Street ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("LinkMan", item.LinkMan ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("Phone", item.Phone ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("CertificateStatus", item.CertificateStatus.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("BusinessBeginTime", item.BusinessBeginTime ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
-            document.Add(new Field("BusinessEndTime", item.BusinessEndTime ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("mobile", item.Mobile ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("industryid", item.IndustryID.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("industryname", item.IndustryName ?? string.Empty, Field.Store.YES, Field.Index.ANALYZED));
+            document.Add(new Field("locationplace", item.LocationPlace ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("street", item.Street ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("linkman", item.LinkMan ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("phone", item.Phone ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("certificatestatus", item.CertificateStatus.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("businessbegintime", item.BusinessBeginTime ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("businessendtime", item.BusinessEndTime ?? string.Empty, Field.Store.YES, Field.Index.NOT_ANALYZED));
 
             writer.AddDocument(document);
         }
@@ -658,6 +627,25 @@ namespace Td.Kylin.Search.WebApi.Core
             }
 
             return isExist;
+        }
+
+        /// <summary>
+        /// 关闭索引文件及IndexWriter
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="writer"></param>
+        private void CloseWriter(FSDirectory directory, IndexWriter writer)
+        {
+            if (null != writer)
+            {
+                writer.Optimize();
+                writer.Commit();
+                writer.Dispose();
+            }
+            if (null != directory)
+            {
+                directory.Dispose();
+            }
         }
     }
 }

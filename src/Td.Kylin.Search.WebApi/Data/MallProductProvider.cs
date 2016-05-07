@@ -90,6 +90,8 @@ namespace Td.Kylin.Search.WebApi.Data
 
                 var categoryList = CacheCollection.B2CProductCategoryCache.Value();
 
+                var tagList = CacheCollection.B2CProductCategoryTagCache.Value();
+
                 foreach (var item in list)
                 {
                     //区域层级
@@ -110,8 +112,8 @@ namespace Td.Kylin.Search.WebApi.Data
                         string[] ids = item.TagIDs.Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries);
 
                         var tagNames = (
-                            from p in db.Mall_CategoryTag
-                            where ids.Contains(p.CategoryID.ToString())
+                            from p in tagList
+                            where ids.Contains(p.TagID.ToString())
                             select p.TagName
                             ).ToList();
                         item.TagNames = string.Join(",", tagNames);

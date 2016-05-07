@@ -8,18 +8,18 @@
         /// <summary>
         /// 精品汇商品
         /// </summary>
-        MallProduct,
+        MallProduct = 1,
         /// <summary>
         /// 商家商品
         /// </summary>
-        MerchantProduct,
+        MerchantProduct = 2,
         /// <summary>
         /// 商家
         /// </summary>
-        Merchant,
+        Merchant = 3,
         /// <summary>
         /// 职位
         /// </summary>
-        Job
+        Job = 4
     }
 }
