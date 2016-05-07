@@ -109,3 +109,12 @@ Backup*/
 UpgradeLog*.XML
 
 src/Td.Kylin.Search.WebApi/wwwroot/luceneindex/
+.vs/config/applicationhost.config
+wrap/Lucene.Net/project.json
+wrap/Lucene.Net/project.lock.json
+wrap/PanGu.HighLight/project.json
+wrap/PanGu.HighLight/project.lock.json
+wrap/PanGu.Lucene.Analyzer/project.json
+wrap/PanGu.Lucene.Analyzer/project.lock.json
+wrap/PanGu/project.json
+wrap/PanGu/project.lock.json
