@@ -23,7 +23,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
         {
             await Task.Run(() =>
             {
-                var list = JobProvider.GetAllJobIds();
+                var list = JobProvider.GetAllJobList();
 
                 if (null != list)
                 {
@@ -33,16 +33,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
 
                     foreach (var item in list)
                     {
-                        int areaID = AreaHelper.GetOpenAreaID(item.AreaLayer, cacheOpenAreas);
-
-                        if (item.IsDelete)
-                        {
-                            Delete(areaID, item.JobID);
-                        }
-                        else
-                        {
-                            Modify(item.JobID);
-                        }
+                        Update(item);
                     }
                 }
             });

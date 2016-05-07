@@ -13,22 +13,58 @@ namespace Td.Kylin.Search.WebApi.Data
     public class MerchantProductProvider
     {
         /// <summary>
-        /// 获取所有商品ID及是否被删除集合
+        /// 获取所有未删除的商品集合
         /// </summary>
         /// <returns></returns>
-        public static List<MerchantProductBaseInfo> GetAllProductIds()
+        public static List<MerchantProduct> GetAllProductList()
         {
             using (var db = new DataContext())
             {
                 var query = from p in db.MerchGoods_Goods
-                            select new MerchantProductBaseInfo
+                            join m in db.Merchant_Account
+                            on p.MerchantID equals m.MerchantID
+                            where p.IsDelete==false
+                            select new MerchantProduct
                             {
-                                ProductID = p.GoodsID,
-                                IsDelete = p.IsDelete,
-                                AreaLayer = p.AreaLayer
+                                ID = p.GoodsID,
+                                AreaID = p.AreaID,
+                                AreaLayer = p.AreaLayer,
+                                CreateTime = p.CreateTime,
+                                DataType = IndexDataType.MerchantProduct,
+                                Name = p.Name,
+                                Pic = p.Pic,
+                                Latitude = m.Latitude,
+                                Longitude = m.Longitude,
+                                MerchantID = p.MerchantID,
+                                MerchantName = m.Name,
+                                OriginalPrice = p.OriginalPrice,
+                                SalePrice = p.SalePrice,
+                                Specification = p.Specification,
+                                SystemCategoryID = p.SystemCategoryID,
+                                SystemCategoryName = null,
+                                UpdateTime = DateTime.Now
                             };
 
-                return query.ToList();
+                var list = query.ToList();
+
+                var categoryList = CacheCollection.MerchantProductSystemCategoryCache.Value();
+
+                list.ForEach((item)=>{
+                    if (null != item)
+                    {
+                        //类目名称
+                        var category = categoryList.FirstOrDefault(p => p.CategoryID == item.SystemCategoryID);
+                        if (null != category)
+                        {
+                            item.SystemCategoryName = category.Name;
+                        }
+                        //图片
+                        var pic = (item.Pic ?? string.Empty).Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                        item.Pic = pic;
+                    }
+                });
+
+                return list;
             }
         }
 

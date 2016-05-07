@@ -15,14 +15,59 @@ namespace Td.Kylin.Search.WebApi.Data
         /// 获取所有商家ID
         /// </summary>
         /// <returns></returns>
-        public static List<long> GetAllMerchantIds()
+        public static List<Merchant> GetAllMerchantList()
         {
             using (var db = new DataContext())
             {
-                var query = from p in db.Merchant_Account
-                            select p.MerchantID;
+                var query = from m in db.Merchant_Account
+                            join c in db.Merchant_Config
+                            on m.MerchantID equals c.MerchantID
+                            select new Merchant
+                            {
+                                AreaID = m.AreaID,
+                                AreaLayer = m.AreaLayer,
+                                BusinessBeginTime = c.BusinessBeginTime,
+                                BusinessEndTime = c.BusinessEndTime,
+                                CertificateStatus = m.CertificateStatus,
+                                CreateTime = m.CreateTime,
+                                DataType = Enums.IndexDataType.Merchant,
+                                ID = m.MerchantID,
+                                IndustryID = m.IndustryID,
+                                IndustryName = null,
+                                Latitude = m.Latitude,
+                                LinkMan = m.LinkMan,
+                                LocationPlace = m.LocationPlace,
+                                Longitude = m.Longitude,
+                                Mobile = m.Mobile,
+                                Name = m.Name,
+                                Phone = m.Phone,
+                                Pic = m.Pics,
+                                Street = m.Street,
+                                UpdateTime = DateTime.Now
+                            };
 
-                return query.ToList();
+                var list = query.ToList();
+
+                var industryList = CacheCollection.MerchantIndustryCache.Value();
+
+                list.ForEach((item) =>
+                {
+                    if (null != item)
+                    {
+                        //图片
+                        var pic = (item.Pic ?? string.Empty).Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                        item.Pic = pic;
+                        //行业名称
+                        var industry = industryList.FirstOrDefault(p => p.IndustryID == item.IndustryID);
+                        if (null != industry)
+                        {
+                            item.IndustryName = industry.Name;
+                        }
+                    }
+                });
+
+
+                return list;
             }
         }
 

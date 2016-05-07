@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Td.Diagnostics;
 using Td.Kylin.DataCache;
 using Td.Kylin.Search.WebApi.Core;
 using Td.Kylin.WebApi;
@@ -33,6 +35,16 @@ namespace Td.Kylin.Search.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // 添加异常拦截处理程序。
+            ExceptionHandlerManager.Instance.Handlers.Add(new UnknownExceptionHandler());
+
+            // 添加全局异常过滤器。
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new Td.Web.Filters.HandleExceptionFilter());
+                options.Filters.Add(new Td.Kylin.WebApi.Filters.HandleArgumentFilter());
+            });
+
             // Add framework services.
             services.AddMvc();
         }

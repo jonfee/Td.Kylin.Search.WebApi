@@ -25,7 +25,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
         {
             await Task.Run(() =>
             {
-                var list = MerchantProductProvider.GetAllProductIds();
+                var list = MerchantProductProvider.GetAllProductList();
 
                 if (null != list)
                 {
@@ -33,16 +33,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     
                     foreach (var item in list)
                     {
-                        int areaID = AreaHelper.GetOpenAreaID(item.AreaLayer, cacheOpenAreas);
-
-                        if (item.IsDelete)
-                        {
-                            Delete(areaID, item.ProductID);
-                        }
-                        else
-                        {
-                            Modify(item.ProductID);
-                        }
+                        Update(item);
                     }
                 }
             }); 

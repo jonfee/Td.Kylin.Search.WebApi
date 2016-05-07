@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNet.Mvc;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Td.Kylin.Search.WebApi.Core;
 using Td.Kylin.Search.WebApi.Data;
@@ -22,20 +24,13 @@ namespace Td.Kylin.Search.WebApi.Controllers
         {
             await Task.Run(() =>
             {
-                var list = MallProductProvider.GetAllProductIds();
+                var list = MallProductProvider.GetAllProductSKUList();
 
                 if (null != list)
                 {
                     foreach (var item in list)
                     {
-                        if (item.IsDelete)
-                        {
-                            Delete(item.AreaID, item.ProductID);
-                        }
-                        else
-                        {
-                            Modify(item.ProductID);
-                        }
+                        Update(item);
                     }
                 }
             });
@@ -121,6 +116,53 @@ namespace Td.Kylin.Search.WebApi.Controllers
             {
                 var list = MallProductProvider.GetMallProductList(productID);
                 IndexManager.Instance.Modify<MallProduct>(list);
+            });
+        }
+
+        /**
+        * @apiVersion 1.0.0
+        * @apiDescription 向索引库中更新精品汇（B2C）商品。
+        * @apiSampleRequest /v1/mallproduct/update
+        * @api {Post} /v1/mallproduct/update 向索引库中更新精品汇（B2C）商品
+        * @apiName Update
+        * @apiGroup MallProduct
+        * @apiPermission Admin|Editor
+        *
+        * @apiParamExample {object} item 精品汇（B2C）商品信息
+        *        {
+        *            "ProductID": long           商品ID
+        *             "Specs": string            规格名称
+        *             "SKU": string              规格SKU码
+        *             "CategoryID": long,        分类ID
+        *             "CategoryName": string,    分类名称
+        *             "TagIDs": string           商品标签ID集，如："6278435570435817519,6278435570435817518"
+        *             "TagNames": string         商品标签名称集，如："智能手机,国产"
+        *             "MarketPrice": decimal,    市场价
+        *             "SalePrice": decimal,      销售价
+        *             "ID": long,                规格SKUID          
+        *             "AreaID": int              所属区域ID
+        *             "AreaLayer": string        所属区域路径（如：440000,440300 表示：广东省深圳市）
+        *             "Name": string             商品名称
+        *             "Pic": string              商品图片（仅一张，不含文件服务器域名，如：mall/product/.../121.jpg）
+        *             "CreateTime": datetime     发布时间
+        *         }
+        *
+        * @apiSuccessExample  正确输出：无
+        *
+        * @apiErrorExample 错误输出: 无
+        */
+        [HttpPost("update")]
+        [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
+        public async void Update(MallProduct item)
+        {
+            await Task.Run(() =>
+            {
+                item.DataType = Enums.IndexDataType.MallProduct;
+                item.Pic = (item.Pic ?? string.Empty).Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                item.Desc = string.Empty;
+                item.UpdateTime = DateTime.Now;
+
+                IndexManager.Instance.Modify(item);
             });
         }
     }

@@ -12,21 +12,44 @@ namespace Td.Kylin.Search.WebApi.Data
     public class JobProvider
     {
         /// <summary>
-        /// 获取所有招聘集合
+        /// 获取所有未删除的招聘集合
         /// </summary>
         /// <returns></returns>
-        public static List<JobBaseInfo> GetAllJobIds()
+        public static List<Job> GetAllJobList()
         {
             using (var db = new DataContext())
             {
-                var query = from p in db.Job_Recruitment
+                var query = from j in db.Job_Recruitment
                             join m in db.Merchant_Account
-                            on p.MerchantID equals m.MerchantID
-                            select new JobBaseInfo
+                            on j.MerchantID equals m.MerchantID
+                            where j.IsDelete == false
+                            select new Job
                             {
-                                JobID = p.RecruitmentID,
-                                IsDelete = p.IsDelete,
-                                AreaLayer = m.AreaLayer
+                                AreaID = j.MerchantAreaID > 0 ? j.MerchantAreaID : m.AreaID,
+                                AreaLayer = m.AreaLayer,
+                                CategoryID = j.CategoryID,
+                                Count = j.Count,
+                                CreateTime = j.CreateTime,
+                                DataType = Enums.IndexDataType.Job,
+                                ID = j.RecruitmentID,
+                                JobType = j.JobType,
+                                Latitude = m.Latitude,
+                                Longitude = m.Longitude,
+                                MerchantID = m.MerchantID,
+                                MaxAge = j.MaxAge,
+                                MaxMonthly = j.MaxMonthly,
+                                MerchantCertificateStatus = m.CertificateStatus,
+                                MerchantName = m.Name,
+                                MinAge = j.MinAge,
+                                MinEducation = j.MinEducation,
+                                MinJobYearsType = j.MinJobYearsType,
+                                MinMonthly = j.MinMonthly,
+                                Name = j.JobName,
+                                Pic = null,
+                                Sex = j.Sex,
+                                UpdateTime = DateTime.Now,
+                                Welfares = j.Welfares,
+                                WordAddress = j.WordAddress
                             };
 
                 return query.ToList();

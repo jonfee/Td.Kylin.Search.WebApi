@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<options>
+	<declarations>
+		<declaration name="logger" type="Td.Diagnostics.Configuration.LoggerElement, Td.CoreLibrary" />
+	</declarations>
+
+	<option path="/">
+		<modules>
+			<module name="LoggerModule" type="Td.Diagnostics.LoggerModule, Td.CoreLibrary" />
+		</modules>
+	</option>
+
+	<option path="/Diagnostics">
+		<logger>
+			<handler name="Error" type="Td.Diagnostics.TextFileLogger, Td.CoreLibrary" filePath="logs/error/${binding:timestamp#yyyyMM}/${binding:source}[{sequence}].log">
+				<predication minLevel="Error" />
+			</handler>
+
+			<handler name="Debug" type="Td.Diagnostics.TextFileLogger, Td.CoreLibrary" filePath="logs/debug/${binding:timestamp#yyyyMM}/${binding:source}[{sequence}].log">
+				<predication minLevel="Debug" />
+				<predication maxLevel="Warn" />
+			</handler>
+		</logger>
+	</option>
+</options>

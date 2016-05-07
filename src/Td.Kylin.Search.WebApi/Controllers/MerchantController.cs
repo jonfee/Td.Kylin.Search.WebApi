@@ -25,13 +25,13 @@ namespace Td.Kylin.Search.WebApi.Controllers
         {
             await Task.Run(() =>
             {
-                var Ids = MerchantProvider.GetAllMerchantIds();
+                var list = MerchantProvider.GetAllMerchantList();
 
-                if (null != Ids)
+                if (null != list)
                 {
-                    foreach (var id in Ids)
+                    foreach (var item in list)
                     {
-                        Modify(id);
+                        Update(item);
                     }
                 }
             });
@@ -112,7 +112,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     item.UpdateTime = item.CreateTime;
 
                     IndexManager.Instance.Insert(item);
-                }                
+                }
             });
         }
 
