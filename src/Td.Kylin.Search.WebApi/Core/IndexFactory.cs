@@ -1,9 +1,5 @@
 ﻿using Lucene.Net.Documents;
-using Lucene.Net.Search;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Td.Kylin.Search.WebApi.Enums;
 using Td.Kylin.Search.WebApi.IndexModel;
 

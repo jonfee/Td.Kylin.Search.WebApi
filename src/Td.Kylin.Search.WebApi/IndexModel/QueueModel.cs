@@ -1,6 +1,6 @@
 ﻿using Td.Kylin.Search.WebApi.Enums;
 
-namespace Td.Kylin.Search.WebApi.Core
+namespace Td.Kylin.Search.WebApi.IndexModel
 {
     /// <summary>
     /// 索引数据模型
@@ -30,6 +30,6 @@ namespace Td.Kylin.Search.WebApi.Core
         /// <summary>
         /// 数据对象
         /// </summary>
-        public object Data { get; set; } 
+        public BaseIndexModel Data { get; set; } 
     }
 }

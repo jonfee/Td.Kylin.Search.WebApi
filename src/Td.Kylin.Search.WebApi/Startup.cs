@@ -4,10 +4,13 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 using Td.Diagnostics;
 using Td.Kylin.DataCache;
 using Td.Kylin.Search.WebApi.Core;
+using Td.Kylin.Search.WebApi.WriterManager;
 using Td.Kylin.WebApi;
+using Td.Web;
 
 namespace Td.Kylin.Search.WebApi
 {
@@ -16,8 +19,10 @@ namespace Td.Kylin.Search.WebApi
         //wwwroot的根目录
         public static string WebRootPath { get; set; }
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv)
         {
+            Application.Start(new ApplicationContext(env, appEnv));
+
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -27,7 +32,19 @@ namespace Td.Kylin.Search.WebApi
 
             Configuration = builder.Build();
 
-            IndexManager.Instance.StartNewThread();
+            #region 开启线程 执行索引库写队列处理
+
+            AreaIndexManager.Instance.StartNewThread();
+
+            MallProductIndexManager.Instance.StartNewThread();
+
+            MerchantProductIndexManager.Instance.StartNewThread();
+
+            MerchantIndexManager.Instance.StartNewThread();
+
+            JobIndexManager.Instance.StartNewThread();
+
+            #endregion
         }
 
         public static IConfigurationRoot Configuration { get; set; }

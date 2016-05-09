@@ -8,6 +8,7 @@ using Td.Kylin.WebApi.Filters;
 using System.Linq;
 using Td.Kylin.Search.WebApi.IndexModel;
 using System;
+using Td.Kylin.Search.WebApi.WriterManager;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -59,7 +60,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
             await Task.Run(() =>
             {
                 var item = MerchantProvider.GetMerchant(merchantID);
-                IndexManager.Instance.Insert(item);
+
+                AreaIndexManager.Instance.Insert(item);
+                MerchantIndexManager.Instance.Insert(item);
             });
         }
 
@@ -111,7 +114,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     item.Desc = string.Empty;
                     item.UpdateTime = item.CreateTime;
 
-                    IndexManager.Instance.Insert(item);
+                    AreaIndexManager.Instance.Insert(item);
+                    MerchantIndexManager.Instance.Insert(item);
                 }
             });
         }
@@ -147,7 +151,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     areaID = AreaHelper.GetOpenAreaID(layer, cacheOpenAreas);
                 }
 
-                IndexManager.Instance.Delete(Enums.IndexDataType.Merchant, areaID.Value, merchantID);
+                AreaIndexManager.Instance.Delete(Enums.IndexDataType.Merchant, areaID.Value, merchantID);
+                MerchantIndexManager.Instance.Delete(Enums.IndexDataType.Merchant, areaID.Value, merchantID);
             });
         }
 
@@ -160,7 +165,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
         * @apiGroup Merchant
         * @apiPermission Admin|Editor
         *
-        * @apiParam {long} productID 商品ID
+        * @apiParam {long} merchantID 商家ID
         *
         * @apiSuccessExample  正确输出：无
         *
@@ -173,7 +178,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
             await Task.Run(() =>
             {
                 var item = MerchantProvider.GetMerchant(merchantID);
-                IndexManager.Instance.Modify(item);
+
+                AreaIndexManager.Instance.Modify(item);
+                MerchantIndexManager.Instance.Modify(item);
             });
         }
 
@@ -225,7 +232,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     item.Desc = string.Empty;
                     item.UpdateTime = DateTime.Now;
 
-                    IndexManager.Instance.Modify(item);
+                    AreaIndexManager.Instance.Modify(item);
+                    MerchantIndexManager.Instance.Modify(item);
                 }
             });
         }

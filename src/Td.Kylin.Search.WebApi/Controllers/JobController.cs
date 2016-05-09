@@ -9,6 +9,7 @@ using Td.Kylin.Search.WebApi.Data;
 using Td.Kylin.Search.WebApi.Core;
 using Td.Kylin.DataCache;
 using Td.Kylin.Search.WebApi.IndexModel;
+using Td.Kylin.Search.WebApi.WriterManager;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -61,7 +62,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
             await Task.Run(() =>
             {
                 var item = JobProvider.GetJob(jobID);
-                IndexManager.Instance.Insert(item);
+
+                AreaIndexManager.Instance.Insert(item);
+                JobIndexManager.Instance.Insert(item);
             });
         }
 
@@ -117,7 +120,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     item.Desc = string.Empty;
                     item.UpdateTime = item.CreateTime;
 
-                    IndexManager.Instance.Insert(item);
+                    AreaIndexManager.Instance.Insert(item);
+                    JobIndexManager.Instance.Insert(item);
                 }
             });
         }
@@ -152,8 +156,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
 
                     areaID = AreaHelper.GetOpenAreaID(layer, cacheOpenAreas);
                 }
-
-                IndexManager.Instance.Delete(Enums.IndexDataType.Job, areaID.Value, jobID);
+                
+                AreaIndexManager.Instance.Delete(Enums.IndexDataType.Job,areaID.Value,jobID);
+                JobIndexManager.Instance.Delete(Enums.IndexDataType.Job,areaID.Value,jobID);
             });
         }
 
@@ -179,7 +184,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
             await Task.Run(() =>
             {
                 var item = JobProvider.GetJob(jobID);
-                IndexManager.Instance.Modify(item);
+
+                AreaIndexManager.Instance.Modify(item);
+                JobIndexManager.Instance.Modify(item);
             });
         }
 
@@ -235,7 +242,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     item.Desc = string.Empty;
                     item.UpdateTime = DateTime.Now;
 
-                    IndexManager.Instance.Modify(item);
+                    AreaIndexManager.Instance.Modify(item);
+                    JobIndexManager.Instance.Modify(item);
                 }
             });
         }

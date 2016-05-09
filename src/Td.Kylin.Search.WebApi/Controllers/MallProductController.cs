@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Td.Kylin.Search.WebApi.Core;
 using Td.Kylin.Search.WebApi.Data;
 using Td.Kylin.Search.WebApi.IndexModel;
+using Td.Kylin.Search.WebApi.WriterManager;
 using Td.Kylin.WebApi;
 using Td.Kylin.WebApi.Filters;
 
@@ -58,7 +59,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
             await Task.Run(() =>
             {
                 var list = MallProductProvider.GetMallProductList(productID);
-                IndexManager.Instance.Insert<MallProduct>(list);
+
+                AreaIndexManager.Instance.Insert(list);
+                MallProductIndexManager.Instance.Insert(list);
             });
         }
 
@@ -89,7 +92,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     areaID = MallProductProvider.GetProductAreaID(productID);
                 }
                 var list = MallProductProvider.GetMallProductSkuIds(productID);
-                IndexManager.Instance.Delete(Enums.IndexDataType.MallProduct, areaID.Value, list);
+
+                AreaIndexManager.Instance.Delete(Enums.IndexDataType.MallProduct, areaID.Value, list);
+                MallProductIndexManager.Instance.Delete(Enums.IndexDataType.MallProduct, areaID.Value, list);
             });
         }
 
@@ -115,7 +120,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
             await Task.Run(() =>
             {
                 var list = MallProductProvider.GetMallProductList(productID);
-                IndexManager.Instance.Modify<MallProduct>(list);
+
+                AreaIndexManager.Instance.Modify(list);
+                MallProductIndexManager.Instance.Modify(list);
             });
         }
 
@@ -162,7 +169,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
                 item.Desc = string.Empty;
                 item.UpdateTime = DateTime.Now;
 
-                IndexManager.Instance.Modify(item);
+                AreaIndexManager.Instance.Modify(item);
+                MallProductIndexManager.Instance.Modify(item);
             });
         }
     }

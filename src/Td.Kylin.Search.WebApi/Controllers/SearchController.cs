@@ -341,9 +341,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
 
         /**
         * @apiVersion 1.0.0
-        * @apiDescription 搜索商家数据。
+        * @apiDescription 搜索招聘数据。
         * @apiSampleRequest /v1/search/job
-        * @api {get} /v1/search/job 搜索商家数据
+        * @api {get} /v1/search/job 搜索招聘数据
         * @apiName JobSearch
         * @apiGroup Search
         * @apiPermission Use

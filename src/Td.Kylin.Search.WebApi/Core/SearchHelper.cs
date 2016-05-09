@@ -250,6 +250,11 @@ namespace Td.Kylin.Search.WebApi.Core
 
             if (null == directory) return null;
 
+            //检测索引文件是否存在
+            bool isExist = IndexReader.IndexExists(directory);
+
+            if (!isExist) return null;
+
             //创建一个只读的索引文件读取实例
             IndexReader reader = IndexReader.Open(directory, true);
 

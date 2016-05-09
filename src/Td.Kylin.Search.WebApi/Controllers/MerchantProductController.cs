@@ -6,6 +6,7 @@ using Td.Kylin.DataCache;
 using Td.Kylin.Search.WebApi.Core;
 using Td.Kylin.Search.WebApi.Data;
 using Td.Kylin.Search.WebApi.IndexModel;
+using Td.Kylin.Search.WebApi.WriterManager;
 using Td.Kylin.WebApi;
 using Td.Kylin.WebApi.Filters;
 
@@ -61,7 +62,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
             await Task.Run(() =>
             {
                 var item = MerchantProductProvider.GetMerchantProduct(productID);
-                IndexManager.Instance.Insert(item);
+
+                AreaIndexManager.Instance.Insert(item);
+                MerchantProductIndexManager.Instance.Insert(item);
             });
         }
 
@@ -110,7 +113,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     item.Desc = string.Empty;
                     item.UpdateTime = item.CreateTime;
 
-                    IndexManager.Instance.Insert(item);
+                    AreaIndexManager.Instance.Insert(item);
+                    MerchantProductIndexManager.Instance.Insert(item);
                 }
             });
         }
@@ -146,7 +150,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     areaID= AreaHelper.GetOpenAreaID(layer, cacheOpenAreas);
                 }
 
-                IndexManager.Instance.Delete(Enums.IndexDataType.MerchantProduct, areaID.Value, productID);
+                AreaIndexManager.Instance.Delete(Enums.IndexDataType.MerchantProduct, areaID.Value, productID);
+                MerchantProductIndexManager.Instance.Delete(Enums.IndexDataType.MerchantProduct, areaID.Value, productID);
             });
         }
 
@@ -172,7 +177,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
             await Task.Run(() =>
             {
                 var item = MerchantProductProvider.GetMerchantProduct(productID);
-                IndexManager.Instance.Modify(item);
+
+                AreaIndexManager.Instance.Modify(item);
+                MerchantProductIndexManager.Instance.Modify(item);
             });
         }
 
@@ -219,7 +226,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
                 item.Desc = string.Empty;
                 item.UpdateTime = DateTime.Now;
                 
-                IndexManager.Instance.Modify(item);
+                AreaIndexManager.Instance.Modify(item);
+                MerchantProductIndexManager.Instance.Modify(item);
             });
         }
     }
