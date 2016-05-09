@@ -139,7 +139,6 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *    ]
         * }
         *
-        * @apiErrorExample 错误输出: 无
         */
         [HttpGet()]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Use)]
@@ -203,7 +202,6 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *    ]
         * }
         *
-        * @apiErrorExample 错误输出: 无
         */
         [HttpGet("mallproduct")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Use)]
@@ -261,7 +259,6 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *    ]
         * }
         *
-        * @apiErrorExample 错误输出: 无
         */
         [HttpGet("merchantproduct")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Use)]
@@ -322,7 +319,6 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *    ]
         * }
         *
-        * @apiErrorExample 错误输出: 无
         */
         [HttpGet("merchant")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Use)]
@@ -388,7 +384,6 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *    ]
         * }
         *
-        * @apiErrorExample 错误输出: 无
         */
         [HttpGet("job")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Use)]

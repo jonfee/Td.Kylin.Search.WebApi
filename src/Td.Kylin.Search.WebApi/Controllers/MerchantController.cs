@@ -48,9 +48,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
        *
        * @apiParam {long} merchantID 商家ID
        *
-       * @apiSuccessExample  正确输出：无
-       *
-       * @apiErrorExample 错误输出: 无
+       * @apiSuccessExample 正常输出: 
+        * {}
        */
         [HttpPost("add")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
@@ -94,9 +93,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *            "CreateTime": datetime      创建时间
         *        }
         *
-        * @apiSuccessExample  正确输出：无
-        *
-        * @apiErrorExample 错误输出: 无
+        * @apiSuccessExample 正常输出: 
+        * {}
         */
         [HttpPost("insert")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
@@ -128,9 +126,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
         * @apiParam {int} areaID 商家所属区域ID（为0或为null时表示由系统检测并处理）
         * @apiParam {long} merchantID 商家ID
         *
-        * @apiSuccessExample  正确输出：无
-        *
-        * @apiErrorExample 错误输出: 无
+        * @apiSuccessExample 正常输出: 
+        * {}
         */
         [HttpPost("delete")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
@@ -162,9 +159,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *
         * @apiParam {long} productID 商品ID
         *
-        * @apiSuccessExample  正确输出：无
-        *
-        * @apiErrorExample 错误输出: 无
+        * @apiSuccessExample 正常输出: 
+        * {}
         */
         [HttpPost("modify")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
@@ -208,9 +204,8 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *            "CreateTime": datetime      创建时间
         *        }
         *
-        * @apiSuccessExample  正确输出：无
-        *
-        * @apiErrorExample 错误输出: 无
+        * @apiSuccessExample 正常输出: 
+        * {}
         */
         [HttpPost("update")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
