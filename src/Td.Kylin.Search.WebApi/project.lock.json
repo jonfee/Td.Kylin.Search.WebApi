@@ -7145,7 +7145,7 @@
     },
     "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
       "type": "package",
-      "sha512": "2+V/VDgZu59Thrlp+FQH38H/SmPBegMKsG0ie1ZZyHtx7kJNEozIx/p9zs0UrolX0uyYX7Ouoj3Q3Be15lqXxA==",
+      "sha512": "E7VdmGw6xO3VHWapC+pNLZmo6yncS53UY3bmb5WZm9wliJBB1A6brgzKA4fcqiLrmJFx71r0M2zEbRDphRLUNg==",
       "files": [
         "analyzers/dotnet/cs/Microsoft.CodeAnalysis.Analyzers.dll",
         "analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.Analyzers.dll",
@@ -8729,7 +8729,7 @@
     },
     "Td.CoreLibrary/1.1.2-beta": {
       "type": "package",
-      "sha512": "3KBfSbS2TEkXjM4qfDW621H3M7fqdYxiaAxelzGcvaN3YJcPyvVBuNxYNkEGxGSs9vr8v9cs5L2oya4bCKhoIg==",
+      "sha512": "58lUNJTtPh7P3fqc2iE3jxdjhR661vdJ7EftsyxXG+szXDpvRWszrnLw3xF9TkjtbrBD0KR9HSe2tXVNQk1sVA==",
       "files": [
         "lib/dnx451/Td.CoreLibrary.dll",
         "lib/dnx451/Td.CoreLibrary.xml",
