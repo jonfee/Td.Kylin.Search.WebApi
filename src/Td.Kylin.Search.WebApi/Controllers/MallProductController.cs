@@ -48,8 +48,6 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *
         * @apiParam {long} productID 商品ID
         *
-        * @apiSuccessExample 正常输出: 
-        * {}
         */
         [HttpPost("add")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
@@ -76,8 +74,6 @@ namespace Td.Kylin.Search.WebApi.Controllers
         * @apiParam {int} areaID 商品所属区域ID（为0或为null时表示由系统检测并处理）
         * @apiParam {long} productID 商品ID
         *
-        * @apiSuccessExample 正常输出: 
-        * {}
         */
         [HttpPost("delete")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
@@ -98,6 +94,35 @@ namespace Td.Kylin.Search.WebApi.Controllers
 
         /**
         * @apiVersion 1.0.0
+        * @apiDescription 向索引库中删除精品汇（B2C）商品规格。
+        * @apiSampleRequest /v1/mallproduct/deletesku
+        * @api {Post} /v1/mallproduct/deletesku 向索引库中删除精品汇（B2C）商品规格
+        * @apiName DeleteSku
+        * @apiGroup MallProduct
+        * @apiPermission Admin|Editor
+        *
+        * @apiParam {int} areaID 商品所属区域ID（为0或为null时表示由系统检测并处理）
+        * @apiParam {long} skuID 商品skuID
+        *
+        */
+        [HttpPost("deletesku")]
+        [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
+        public async void DeleteSku(int? areaID, long skuID)
+        {
+            await Task.Run(() =>
+            {
+                if (!areaID.HasValue)
+                {
+                    areaID = MallProductProvider.GetSkuAreaID(skuID);
+                }
+
+                AreaIndexManager.Instance.Delete(Enums.IndexDataType.MallProduct, areaID.Value, skuID);
+                MallProductIndexManager.Instance.Delete(Enums.IndexDataType.MallProduct, areaID.Value, skuID);
+            });
+        }
+
+        /**
+        * @apiVersion 1.0.0
         * @apiDescription 向索引库中更新精品汇（B2C）商品。
         * @apiSampleRequest /v1/mallproduct/modify
         * @api {Post} /v1/mallproduct/modify 向索引库中更新精品汇（B2C）商品
@@ -107,8 +132,6 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *
         * @apiParam {long} productID 商品ID
         *
-        * @apiSuccessExample 正常输出: 
-        * {}
         */
         [HttpPost("modify")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
@@ -151,8 +174,6 @@ namespace Td.Kylin.Search.WebApi.Controllers
         *             "CreateTime": datetime     发布时间
         *         }
         *
-        * @apiSuccessExample 正常输出: 
-        * {}
         */
         [HttpPost("update")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]

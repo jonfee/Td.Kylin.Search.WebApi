@@ -104,6 +104,26 @@ namespace Td.Kylin.Search.WebApi.Data
         }
 
         /// <summary>
+        /// 获取商品规格所属的区域ID
+        /// </summary>
+        /// <param name="skuID"></param>
+        /// <returns></returns>
+        public static int GetSkuAreaID(long skuID)
+        {
+            using (var db = new DataContext())
+            {
+                var query = from p in db.Mall_Product
+                            join s in db.Mall_ProductSKU
+                            on p.ProductID equals s.ProductID
+                            where s.SkuID==skuID
+                            select p.AreaID;
+
+                return query.FirstOrDefault();
+            }
+        }
+             
+
+        /// <summary>
         /// 根据商品ID获取其下所有规格的商品集合
         /// </summary>
         /// <param name="productID"></param>
