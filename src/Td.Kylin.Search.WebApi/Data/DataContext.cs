@@ -11,7 +11,7 @@ namespace Td.Kylin.Search.WebApi.Data
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
-            optionBuilder.UseNpgsql(Startup.Configuration["Data:DefaultConnection:ConnectionString"]);
+            optionBuilder.UseSqlServer(Startup.Configuration["Data:DefaultConnection:ConnectionString"]);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

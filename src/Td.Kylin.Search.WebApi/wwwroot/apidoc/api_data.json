@@ -1,5 +1,33 @@
 [
   {
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "varname1",
+            "description": "<p>No type.</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "<p>String</p> ",
+            "optional": false,
+            "field": "varname2",
+            "description": "<p>With type.</p> "
+          }
+        ]
+      }
+    },
+    "type": "",
+    "url": "",
+    "version": "0.0.0",
+    "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/wwwroot/apidoc/main.js",
+    "group": "D__20151120Git_Td_Kylin_Search_WebApi_src_Td_Kylin_Search_WebApi_wwwroot_apidoc_main_js",
+    "groupTitle": "D__20151120Git_Td_Kylin_Search_WebApi_src_Td_Kylin_Search_WebApi_wwwroot_apidoc_main_js",
+    "name": ""
+  },
+  {
     "version": "1.0.0",
     "description": "<p>向索引库中新增商家招聘。</p> ",
     "sampleRequest": [
@@ -29,15 +57,6 @@
           }
         ]
       }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
     },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/JobController.cs",
     "groupTitle": "Job"
@@ -80,15 +99,6 @@
         ]
       }
     },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/JobController.cs",
     "groupTitle": "Job"
   },
@@ -116,15 +126,6 @@
           "title": "item 招聘信息",
           "content": "{\n    \"MerchantID\": long                  商家ID\n    \"MerchantName\": string              商家名称\n    \"MerchantCertificateStatus\": int    商家认证类型（以2的N次方和表示）\n    \"CategoryID\": long                  岗位类型ID\n    \"Count\": int                        招聘人数\n    \"MinMonthly\": int                   最低提供月薪\n    \"MaxMonthly\": int                   最高提供月薪\n    \"Sex\": int                          性别（1 男，2 女）\n    \"MinAge\": int                       最小年龄限制\n    \"MaxAge\": int                       最大年龄限制\n    \"MinEducation\": int                 最低学历要求（枚举）\n    \"MinJobYearsType\": int              最低工作年限\n    \"JobType\": int                      工作性质（1 全职，2 兼职）\n    \"Welfares\": int                     福利（枚举，以2的N次方和表示）\n    \"WordAddress\": string               工作地点\n    \"Latitude\": double                  工作地纬度\n    \"Longitude\": double                 工作地经度\n    \"ID\": long                          招聘信息ID\n    \"AreaID\": int                       招聘所属区域（一般为具体区县ID）\n    \"AreaLayer\": string                 招聘所属区域路径（如：440000,440300,440301 表示：广东省深圳市罗湖区）\n    \"Name\": string                      岗位名称\n    \"CreateTime\": datetime              发布时间\n}",
           "type": "object"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
         }
       ]
     },
@@ -162,15 +163,6 @@
         ]
       }
     },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/JobController.cs",
     "groupTitle": "Job"
   },
@@ -198,15 +190,6 @@
           "title": "item 招聘信息",
           "content": "{\n    \"MerchantID\": long                  商家ID\n    \"MerchantName\": string              商家名称\n    \"MerchantCertificateStatus\": int    商家认证类型（以2的N次方和表示）\n    \"CategoryID\": long                  岗位类型ID\n    \"Count\": int                        招聘人数\n    \"MinMonthly\": int                   最低提供月薪\n    \"MaxMonthly\": int                   最高提供月薪\n    \"Sex\": int                          性别（1 男，2 女）\n    \"MinAge\": int                       最小年龄限制\n    \"MaxAge\": int                       最大年龄限制\n    \"MinEducation\": int                 最低学历要求（枚举）\n    \"MinJobYearsType\": int              最低工作年限\n    \"JobType\": int                      工作性质（1 全职，2 兼职）\n    \"Welfares\": int                     福利（枚举，以2的N次方和表示）\n    \"WordAddress\": string               工作地点\n    \"Latitude\": double                  工作地纬度\n    \"Longitude\": double                 工作地经度\n    \"ID\": long                          招聘信息ID\n    \"AreaID\": int                       招聘所属区域（一般为具体区县ID）\n    \"AreaLayer\": string                 招聘所属区域路径（如：440000,440300,440301 表示：广东省深圳市罗湖区）\n    \"Name\": string                      岗位名称\n    \"CreateTime\": datetime              发布时间\n}",
           "type": "object"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
         }
       ]
     },
@@ -243,15 +226,6 @@
           }
         ]
       }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
     },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MallProductController.cs",
     "groupTitle": "MallProduct"
@@ -294,14 +268,46 @@
         ]
       }
     },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
+    "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MallProductController.cs",
+    "groupTitle": "MallProduct"
+  },
+  {
+    "version": "1.0.0",
+    "description": "<p>向索引库中删除精品汇（B2C）商品规格。</p> ",
+    "sampleRequest": [
+      {
+        "url": "/v1/mallproduct/deletesku"
+      }
+    ],
+    "type": "Post",
+    "url": "/v1/mallproduct/deletesku",
+    "title": "向索引库中删除精品汇（B2C）商品规格",
+    "name": "DeleteSku",
+    "group": "MallProduct",
+    "permission": [
+      {
+        "name": "Admin|Editor"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "<p>int</p> ",
+            "optional": false,
+            "field": "areaID",
+            "description": "<p>商品所属区域ID（为0或为null时表示由系统检测并处理）</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "<p>long</p> ",
+            "optional": false,
+            "field": "skuID",
+            "description": "<p>商品skuID</p> "
+          }
+        ]
+      }
     },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MallProductController.cs",
     "groupTitle": "MallProduct"
@@ -337,15 +343,6 @@
         ]
       }
     },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MallProductController.cs",
     "groupTitle": "MallProduct"
   },
@@ -373,15 +370,6 @@
           "title": "item 精品汇（B2C）商品信息",
           "content": "{\n    \"ProductID\": long           商品ID\n     \"Specs\": string            规格名称\n     \"SKU\": string              规格SKU码\n     \"CategoryID\": long,        分类ID\n     \"CategoryName\": string,    分类名称\n     \"TagIDs\": string           商品标签ID集，如：\"6278435570435817519,6278435570435817518\"\n     \"TagNames\": string         商品标签名称集，如：\"智能手机,国产\"\n     \"MarketPrice\": decimal,    市场价\n     \"SalePrice\": decimal,      销售价\n     \"ID\": long,                规格SKUID          \n     \"AreaID\": int              所属区域ID\n     \"AreaLayer\": string        所属区域路径（如：440000,440300 表示：广东省深圳市）\n     \"Name\": string             商品名称\n     \"Pic\": string              商品图片（仅一张，不含文件服务器域名，如：mall/product/.../121.jpg）\n     \"CreateTime\": datetime     发布时间\n }",
           "type": "object"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
         }
       ]
     },
@@ -418,15 +406,6 @@
           }
         ]
       }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
     },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MerchantController.cs",
     "groupTitle": "Merchant"
@@ -469,15 +448,6 @@
         ]
       }
     },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MerchantController.cs",
     "groupTitle": "Merchant"
   },
@@ -505,15 +475,6 @@
           "title": "item 商家信息",
           "content": "{\n    \"Mobile\": string            手机号\n    \"IndustryID\": long          行业ID\n    \"IndustryName\": string      行业名称\n    \"LocationPlace\": string     所在位置\n    \"Street\": string            所在街道\n    \"Latitude\": double          纬度\n    \"Longitude\": double         经度\n    \"LinkMan\": string           联系人\n    \"Phone\": string             联系电话\n    \"CertificateStatus\": int    认证类型（以2的N次方和表示）\n    \"BusinessBeginTime\": string 开始营业时间（如：09:00）\n    \"BusinessEndTime\": string   结束营业时间（如：22:00）\n    \"ID\": long                  商家ID,\n    \"AreaID\": int               商家所属区域（一般为具体区县ID）\n    \"AreaLayer\": string         商家所属区域路径（如：440000，440300，440301 表示：广东省深圳市罗湖区）\n    \"Name\": string              商家名称\n    \"Pic\": string               商家图片路径（仅一张，不含文件服务器域名，如：enterprise/.../1231.jpg）\n    \"CreateTime\": datetime      创建时间\n}",
           "type": "object"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
         }
       ]
     },
@@ -545,20 +506,11 @@
             "group": "Parameter",
             "type": "<p>long</p> ",
             "optional": false,
-            "field": "productID",
-            "description": "<p>商品ID</p> "
+            "field": "merchantID",
+            "description": "<p>商家ID</p> "
           }
         ]
       }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
     },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MerchantController.cs",
     "groupTitle": "Merchant"
@@ -593,15 +545,6 @@
           }
         ]
       }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
     },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MerchantProductController.cs",
     "groupTitle": "MerchantProduct"
@@ -644,15 +587,6 @@
         ]
       }
     },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MerchantProductController.cs",
     "groupTitle": "MerchantProduct"
   },
@@ -680,15 +614,6 @@
           "title": "item 商家商品信息",
           "content": "{\n   \"MerchantID\": long              所属商家ID\n   \"MerchantName\": string          所属商家名称\n   \"SystemCategoryID\": lont        商品所属系统分类ID\n   \"SystemCategoryName\": string    商品所属系统分类名称\n   \"OriginalPrice\": decimal        商品原价\n   \"SalePrice\": decimal            销售价\n   \"Specification\": string         规格\n   \"Latitude\": double              商家所在位置纬度\n   \"Longitude\": double             商家所在位置经度\n   \"ID\": long                      商品ID\n   \"AreaID\": int                   所属商家所在区域ID\n   \"AreaLayer\": string             所属商家所在区域路径（如：440000,440300 表示：广东省深圳市）\n   \"Name\": string                  商品名称\n   \"Pic\": string                   商品图片（仅一张，不含文件服务器域名，如：\"micromall/goods/16/05/05/113349i8bwct8ayd.jpg\"）\n   \"CreateTime\": datetime          发布时间\n}",
           "type": "object"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
         }
       ]
     },
@@ -726,15 +651,6 @@
         ]
       }
     },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MerchantProductController.cs",
     "groupTitle": "MerchantProduct"
   },
@@ -762,15 +678,6 @@
           "title": "item 商家商品信息",
           "content": "{\n   \"MerchantID\": long              所属商家ID\n   \"MerchantName\": string          所属商家名称\n   \"SystemCategoryID\": lont        商品所属系统分类ID\n   \"SystemCategoryName\": string    商品所属系统分类名称\n   \"OriginalPrice\": decimal        商品原价\n   \"SalePrice\": decimal            销售价\n   \"Specification\": string         规格\n   \"Latitude\": double              商家所在位置纬度\n   \"Longitude\": double             商家所在位置经度\n   \"ID\": long                      商品ID\n   \"AreaID\": int                   所属商家所在区域ID\n   \"AreaLayer\": string             所属商家所在区域路径（如：440000,440300 表示：广东省深圳市）\n   \"Name\": string                  商品名称\n   \"Pic\": string                   商品图片（仅一张，不含文件服务器域名，如：\"micromall/goods/16/05/05/113349i8bwct8ayd.jpg\"）\n   \"CreateTime\": datetime          发布时间\n}",
           "type": "object"
-        }
-      ]
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
         }
       ]
     },
@@ -804,21 +711,12 @@
         }
       ]
     },
-    "success": {
-      "examples": [
-        {
-          "title": "正常输出: ",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "D:/20151120Git/Td.Kylin.Search.WebApi/src/Td.Kylin.Search.WebApi/Controllers/MerchantController.cs",
     "groupTitle": "Merchant"
   },
   {
     "version": "1.0.0",
-    "description": "<p>搜索商家数据。</p> ",
+    "description": "<p>搜索招聘数据。</p> ",
     "sampleRequest": [
       {
         "url": "/v1/search/job"
@@ -826,7 +724,7 @@
     ],
     "type": "get",
     "url": "/v1/search/job",
-    "title": "搜索商家数据",
+    "title": "搜索招聘数据",
     "name": "JobSearch",
     "group": "Search",
     "permission": [
