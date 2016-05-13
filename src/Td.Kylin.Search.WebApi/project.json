@@ -18,7 +18,7 @@
     "Td.Kylin.DataCache": "1.0.8.1-rc1",
     "Td.Kylin.Entity": "1.0.0-rc1-28",
     "Td.Kylin.EnumLibrary": "1.0.33.1-beta",
-    "Td.Kylin.WebApi": "1.0.0-rc1-87",
+    "Td.Kylin.WebApi": "1.0.0-rc1-88",
     "z.PanGu.HighLight": "1.0.0.1",
     "z.PanGu.Lucene.Analyzer": "2.4.1.3"
   },
