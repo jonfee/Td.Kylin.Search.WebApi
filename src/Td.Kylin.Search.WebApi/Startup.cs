@@ -5,8 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
+using System;
 using Td.Diagnostics;
 using Td.Kylin.DataCache;
+using Td.Kylin.EnumLibrary;
 using Td.Kylin.Search.WebApi.Core;
 using Td.Kylin.Search.WebApi.WriterManager;
 using Td.Kylin.WebApi;
@@ -72,12 +74,26 @@ namespace Td.Kylin.Search.WebApi
             //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.AddDebug();
 
+            SqlProviderType sqlType = new Func<SqlProviderType>(() =>
+            {
+                string sqltype = Configuration["Data:SqlType"] ?? string.Empty;
+
+                switch (sqltype.ToLower())
+                {
+                    case "npgsql":
+                        return SqlProviderType.NpgSQL;
+                    case "mssql":
+                    default:
+                        return SqlProviderType.SqlServer;
+                }
+            }).Invoke();
+
             string redisConn = Configuration["Redis:ConnectString"];//Redis缓存服务器信息
-            var SqlConn = Configuration["Data:DefaultConnection:ConnectionString"];
+            var sqlConn = Configuration["Data:DefaultConnection:ConnectionString"];
 
-            app.UseDataCache(redisConn, DataCache.SqlProviderType.PostgreSQL, SqlConn);
+            app.UseDataCache(redisConn, sqlType, sqlConn);
 
-            app.UseKylinWebApi(Configuration);
+            app.UseKylinWebApi(Configuration["ServerId"], sqlConn, sqlType);
 
             app.UseIISPlatformHandler();
 
