@@ -541,12 +541,7 @@ namespace Td.Kylin.Search.WebApi.Data
         /// 服务职员认证信息
         /// </summary>
         public DbSet<User_Certification> User_Certification { get { return Set<User_Certification>(); } }
-
-        /// <summary>
-        /// 服务职员业务
-        /// </summary>
-        public DbSet<Worker_Business> Worker_Business { get { return Set<Worker_Business>(); } }
-
+        
         /// <summary>
         /// 服务职员所服务的企业（商家）
         /// </summary>

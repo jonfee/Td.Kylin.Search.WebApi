@@ -646,10 +646,6 @@ namespace Td.Kylin.Search.WebApi.Data
                 entity.HasKey(p => p.CertificateID);
             });
 
-            modelBuilder.Entity<Worker_Business>(entity =>
-            {
-                entity.HasKey(p => new { p.UserID, p.BusinessID });
-            });
 
             modelBuilder.Entity<Worker_Company>(entity =>
             {
