@@ -1985,7 +1985,7 @@
           "lib/dnx451/Td.Kylin.DataCache.dll": {}
         }
       },
-      "Td.Kylin.Entity/1.0.0-rc1-33": {
+      "Td.Kylin.Entity/1.0.0-rc1-37": {
         "type": "package",
         "dependencies": {
           "EntityFramework.Commands": "7.0.0-rc1-final",
@@ -2014,7 +2014,7 @@
           "lib/dnx451/Td.Kylin.Entity.dll": {}
         }
       },
-      "Td.Kylin.EnumLibrary/1.0.34-bata": {
+      "Td.Kylin.EnumLibrary/1.0.37-bata": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.21-beta-23516",
@@ -2054,7 +2054,7 @@
           "lib/dnx451/Td.Kylin.Redis.dll": {}
         }
       },
-      "Td.Kylin.WebApi/1.0.0-rc1-92": {
+      "Td.Kylin.WebApi/1.0.0-rc1-93": {
         "type": "package",
         "dependencies": {
           "EntityFramework.Commands": "7.0.0-rc1-final",
@@ -4138,7 +4138,7 @@
           "lib/dnx451/Td.Kylin.DataCache.dll": {}
         }
       },
-      "Td.Kylin.Entity/1.0.0-rc1-33": {
+      "Td.Kylin.Entity/1.0.0-rc1-37": {
         "type": "package",
         "dependencies": {
           "EntityFramework.Commands": "7.0.0-rc1-final",
@@ -4167,7 +4167,7 @@
           "lib/dnx451/Td.Kylin.Entity.dll": {}
         }
       },
-      "Td.Kylin.EnumLibrary/1.0.34-bata": {
+      "Td.Kylin.EnumLibrary/1.0.37-bata": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.21-beta-23516",
@@ -4207,7 +4207,7 @@
           "lib/dnx451/Td.Kylin.Redis.dll": {}
         }
       },
-      "Td.Kylin.WebApi/1.0.0-rc1-92": {
+      "Td.Kylin.WebApi/1.0.0-rc1-93": {
         "type": "package",
         "dependencies": {
           "EntityFramework.Commands": "7.0.0-rc1-final",
@@ -6291,7 +6291,7 @@
           "lib/dnx451/Td.Kylin.DataCache.dll": {}
         }
       },
-      "Td.Kylin.Entity/1.0.0-rc1-33": {
+      "Td.Kylin.Entity/1.0.0-rc1-37": {
         "type": "package",
         "dependencies": {
           "EntityFramework.Commands": "7.0.0-rc1-final",
@@ -6320,7 +6320,7 @@
           "lib/dnx451/Td.Kylin.Entity.dll": {}
         }
       },
-      "Td.Kylin.EnumLibrary/1.0.34-bata": {
+      "Td.Kylin.EnumLibrary/1.0.37-bata": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.21-beta-23516",
@@ -6360,7 +6360,7 @@
           "lib/dnx451/Td.Kylin.Redis.dll": {}
         }
       },
-      "Td.Kylin.WebApi/1.0.0-rc1-92": {
+      "Td.Kylin.WebApi/1.0.0-rc1-93": {
         "type": "package",
         "dependencies": {
           "EntityFramework.Commands": "7.0.0-rc1-final",
@@ -8755,24 +8755,22 @@
         "Td.Kylin.DataCache.nuspec"
       ]
     },
-    "Td.Kylin.Entity/1.0.0-rc1-33": {
+    "Td.Kylin.Entity/1.0.0-rc1-37": {
       "type": "package",
-      "sha512": "gBbX65+3pVXb/NaZcowqe1kS8tUJLPEUIUgKtwbYblJkSG0V7F6NGbqQxk2p+DDWt+VJ/Jsf8tM08RKTyxHDgQ==",
+      "sha512": "tdNgIvBbJm6uyIvlFkclHkZ1rfkE6tnyC1qOIkpidSUeIx5NK2nTtFFFy6zgJMADoBO/5GGTCYgqfFB3hOOgKw==",
       "files": [
         "lib/dnx451/Td.Kylin.Entity.dll",
         "lib/dnx451/Td.Kylin.Entity.xml",
         "lib/dnxcore50/Td.Kylin.Entity.dll",
         "lib/dnxcore50/Td.Kylin.Entity.xml",
-        "lib/net46/Td.Kylin.Entity.dll",
-        "lib/net46/Td.Kylin.Entity.xml",
-        "Td.Kylin.Entity.1.0.0-rc1-33.nupkg",
-        "Td.Kylin.Entity.1.0.0-rc1-33.nupkg.sha512",
+        "Td.Kylin.Entity.1.0.0-rc1-37.nupkg",
+        "Td.Kylin.Entity.1.0.0-rc1-37.nupkg.sha512",
         "Td.Kylin.Entity.nuspec"
       ]
     },
-    "Td.Kylin.EnumLibrary/1.0.34-bata": {
+    "Td.Kylin.EnumLibrary/1.0.37-bata": {
       "type": "package",
-      "sha512": "nRX3ubbd135nIUw5NIrykczVyDLxKTaBzG1B/VRDXrGBcAMmwSsRc/PraBj7FrkPSc242covy1aLSNOQTzk+WQ==",
+      "sha512": "GRgYqWhjVrF4ZginGRI6ZUs+swCcx9o/4fXVaCdjjVHsPFlFtN377ByQwFakVzCkynWqlz8fhTH8UKcBF8VmZA==",
       "files": [
         "lib/dnx451/Td.Kylin.EnumLibrary.dll",
         "lib/dnx451/Td.Kylin.EnumLibrary.xml",
@@ -8786,8 +8784,8 @@
         "lib/net45/Td.Kylin.EnumLibrary.xml",
         "lib/net46/Td.Kylin.EnumLibrary.dll",
         "lib/net46/Td.Kylin.EnumLibrary.xml",
-        "Td.Kylin.EnumLibrary.1.0.34-bata.nupkg",
-        "Td.Kylin.EnumLibrary.1.0.34-bata.nupkg.sha512",
+        "Td.Kylin.EnumLibrary.1.0.37-bata.nupkg",
+        "Td.Kylin.EnumLibrary.1.0.37-bata.nupkg.sha512",
         "Td.Kylin.EnumLibrary.nuspec"
       ]
     },
@@ -8804,16 +8802,16 @@
         "Td.Kylin.Redis.nuspec"
       ]
     },
-    "Td.Kylin.WebApi/1.0.0-rc1-92": {
+    "Td.Kylin.WebApi/1.0.0-rc1-93": {
       "type": "package",
-      "sha512": "XPUSyabsjDBEgj0603w51Z2lj8wT97ocHQDqoIkAeeTemOk+sYC10bJLFV6QY13zWQPRMmNpmW8ec3y3v6axVg==",
+      "sha512": "HfoCVbtWcv7rWQyyNCl1E8xVmYZjrNnEC4cZNHp0zASzuhHmxGELylHPPwXIbj+P1sBwKUBRV/7kI3QKnkaiXw==",
       "files": [
         "lib/dnx451/Td.Kylin.WebApi.dll",
         "lib/dnx451/Td.Kylin.WebApi.xml",
         "lib/dnxcore50/Td.Kylin.WebApi.dll",
         "lib/dnxcore50/Td.Kylin.WebApi.xml",
-        "Td.Kylin.WebApi.1.0.0-rc1-92.nupkg",
-        "Td.Kylin.WebApi.1.0.0-rc1-92.nupkg.sha512",
+        "Td.Kylin.WebApi.1.0.0-rc1-93.nupkg",
+        "Td.Kylin.WebApi.1.0.0-rc1-93.nupkg.sha512",
         "Td.Kylin.WebApi.nuspec"
       ]
     },
@@ -8883,11 +8881,11 @@
       "Microsoft.Extensions.Logging.Console >= 1.0.0-rc1-final",
       "Microsoft.Extensions.Logging.Debug >= 1.0.0-rc1-final",
       "Td.Kylin.DataCache >= 1.0.14-rc1",
-      "Td.Kylin.EnumLibrary >= 1.0.34-bata",
-      "Td.Kylin.WebApi >= 1.0.0-rc1-92",
+      "Td.Kylin.Entity >= 1.0.0-rc1-37",
+      "Td.Kylin.EnumLibrary >= 1.0.37-bata",
+      "Td.Kylin.WebApi >= 1.0.0-rc1-93",
       "z.PanGu.HighLight >= 1.0.0.1",
-      "z.PanGu.Lucene.Analyzer >= 2.4.1.3",
-      "Td.Kylin.Entity >= 1.0.0-rc1-33"
+      "z.PanGu.Lucene.Analyzer >= 2.4.1.3"
     ],
     "DNX,Version=v4.5.1": []
   }

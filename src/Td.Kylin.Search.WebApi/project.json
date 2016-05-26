@@ -15,11 +15,11 @@
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
     "Td.Kylin.DataCache": "1.0.14-rc1",
-    "Td.Kylin.EnumLibrary": "1.0.34-bata",
-    "Td.Kylin.WebApi": "1.0.0-rc1-92",
+    "Td.Kylin.Entity": "1.0.0-rc1-37",
+    "Td.Kylin.EnumLibrary": "1.0.37-bata",
+    "Td.Kylin.WebApi": "1.0.0-rc1-93",
     "z.PanGu.HighLight": "1.0.0.1",
-    "z.PanGu.Lucene.Analyzer": "2.4.1.3",
-    "Td.Kylin.Entity": "1.0.0-rc1-33"
+    "z.PanGu.Lucene.Analyzer": "2.4.1.3"
   },
 
   "commands": {
