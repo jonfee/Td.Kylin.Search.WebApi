@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Td.Kylin.Search.WebApi.Enums;
 using Td.Kylin.Search.WebApi.IndexModel;
 
 namespace Td.Kylin.Search.WebApi.Core
@@ -100,7 +101,7 @@ namespace Td.Kylin.Search.WebApi.Core
             if (queries.Length != fields.Length) return null;
 
             if (fields.Length != flags.Length) return null;
-            
+
             Analyzer analyzer = new StandardAnalyzer(IndexConfiguration.LuceneMatchVersion);
 
             Query query = MultiFieldQueryParser.Parse(IndexConfiguration.LuceneMatchVersion, queries, fields, flags, analyzer);
@@ -235,9 +236,23 @@ namespace Td.Kylin.Search.WebApi.Core
         /// <returns></returns>
         public static List<T> Search<T>(string indexPath, Query query, Sort sort, int pageIndex, int pageSize, out int count) where T : BaseIndexModel
         {
-            count = 0;
+            return Search<T>(new[] { indexPath }, query, sort, pageIndex, pageSize, out count);
+        }
 
-            if (string.IsNullOrWhiteSpace(indexPath)) return null;
+        /// <summary>
+        /// 多索引文件联合查询搜索（带分页）
+        /// </summary>
+        /// <typeparam name="T">返回结果数据类型</typeparam>
+        /// <param name="indexPaths">索引文件路径集合</param>
+        /// <param name="query">Query</param>
+        /// <param name="sort">排序</param>
+        /// <param name="pageIndex">当前搜索页</param>
+        /// <param name="pageSize">每页显示数</param>
+        /// <param name="count">总搜索结果数</param>
+        /// <returns></returns>
+        public static List<T> Search<T>(string[] indexPaths, Query query, Sort sort, int pageIndex, int pageSize, out int count) where T : BaseIndexModel
+        {
+            count = 0;
 
             if (null == query) return null;
 
@@ -245,30 +260,45 @@ namespace Td.Kylin.Search.WebApi.Core
 
             if (pageSize < 1) pageSize = 1;
 
-            //打开索引文件
-            FSDirectory directory = FSDirectory.Open(new DirectoryInfo(indexPath), new NoLockFactory());
-
-            if (null == directory) return null;
-
-            //检测索引文件是否存在
-            bool isExist = IndexReader.IndexExists(directory);
-
-            if (!isExist) return null;
-
-            //创建一个只读的索引文件读取实例
-            IndexReader reader = IndexReader.Open(directory, true);
-
-            //实例化IndexSearcher搜索器
-            IndexSearcher searcher = new IndexSearcher(reader);
-
             //起始搜索位置
             int start = (pageIndex - 1) * pageSize;
+
+            if (null == indexPaths || indexPaths.Length < 1) return null;
+
+            List<IndexSearcher> searchers = new List<IndexSearcher>();
+
+            foreach (var indexPath in indexPaths)
+            {
+                if (string.IsNullOrWhiteSpace(indexPath)) continue;
+
+                //打开索引文件
+                FSDirectory directory = FSDirectory.Open(new DirectoryInfo(indexPath), new NoLockFactory());
+
+                if (null == directory) continue;
+
+                //检测索引文件是否存在
+                bool isExist = IndexReader.IndexExists(directory);
+
+                if (!isExist) continue;
+
+                //创建一个只读的索引文件读取实例
+                IndexReader reader = IndexReader.Open(directory, true);
+
+                //实例化IndexSearcher搜索器
+                IndexSearcher searcher = new IndexSearcher(reader);
+
+                searchers.Add(searcher);
+            }
+
+            if (searchers.Count < 1) return null;
+
+            MultiSearcher multiSearcher = new MultiSearcher(searchers.ToArray());
 
             //Collector
             TopFieldCollector results = TopFieldCollector.Create(sort, start + pageSize, false, false, false, false);
 
             //搜索
-            searcher.Search(query, results);
+            multiSearcher.Search(query, results);
 
             //总命中率（精算）
             count = results.TotalHits;
@@ -282,7 +312,7 @@ namespace Td.Kylin.Search.WebApi.Core
             //遍历当前页文档，并转换为需要的结果类型
             foreach (var scoreDoc in docs)
             {
-                Document doc = searcher.Doc(scoreDoc.Doc);
+                Document doc = multiSearcher.Doc(scoreDoc.Doc);
 
                 var data = new IndexFactory(doc).Result as T;
 
