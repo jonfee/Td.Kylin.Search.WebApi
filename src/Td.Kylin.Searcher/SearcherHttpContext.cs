@@ -126,8 +126,8 @@ namespace Td.Kylin.Searcher
             urlParams.Add("PartnerId", partnerid);
             urlParams.Add("Timestamp", DateTime.Now.ToUniversalTime().Ticks.ToString());
             urlParams.Add("LBSArea", areaID.ToString());
-            txtParams.Add("LBSLongitude", lbsLongitude.ToString());
-            txtParams.Add("LBSLatitude", lbsLatitude.ToString());
+            urlParams.Add("LBSLongitude", lbsLongitude.ToString());
+            urlParams.Add("LBSLatitude", lbsLatitude.ToString());
 
             foreach (var item in urlParams)
             {
@@ -154,8 +154,7 @@ namespace Td.Kylin.Searcher
                 result = new SearcherResult
                 {
                     Content = data,
-                    StatusCode = response.StatusCode,
-                    Timespan = timer.Elapsed
+                    StatusCode = response.StatusCode
                 };
             }
             catch (HttpRequestException hre)

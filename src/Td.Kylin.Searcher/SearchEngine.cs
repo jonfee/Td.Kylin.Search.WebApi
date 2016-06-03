@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Td.AspNet.Utils;
 using Td.Kylin.Search.WebApi.IndexModel;
 using Td.Kylin.Searcher.IndexModel;
@@ -29,7 +30,7 @@ namespace Td.Kylin.Searcher
         /// 初始化索引文件
         /// </summary>
         /// <param name="dataType"><seealso cref="IndexDataType"/>成员</param>
-        public SearcherResult Init(IndexDataType dataType)
+        public async Task<SearcherResult> Init(IndexDataType dataType)
         {
             var config = ApiConfigRoot.Configs.FirstOrDefault(p => p.DataType == dataType && p.ActionMode == ActionMode.Init);
 
@@ -42,7 +43,7 @@ namespace Td.Kylin.Searcher
                     Timespan = TimeSpan.Zero
                 };
 
-            return DoWork(null, config);
+            return await DoWork(null, config);
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace Td.Kylin.Searcher
         /// </summary>
         /// <param name="dataType"><seealso cref="IndexDataType"/>成员</param>
         /// <param name="dataID"></param>
-        public SearcherResult Add(IndexDataType dataType, long dataID)
+        public async Task<SearcherResult> Add(IndexDataType dataType, long dataID)
         {
             var config = ApiConfigRoot.Configs.FirstOrDefault(p => p.DataType == dataType && p.ActionMode == ActionMode.InsertByID);
 
@@ -67,7 +68,7 @@ namespace Td.Kylin.Searcher
             Dictionary<string, string> dicParameter = new Dictionary<string, string>();
             dicParameter.Add(parameterName, dataID.ToString());
 
-            return DoWork(dicParameter, config);
+            return await DoWork(dicParameter, config);
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace Td.Kylin.Searcher
         /// <typeparam name="T"></typeparam>
         /// <param name="item"></param>
         /// <returns></returns>
-        public SearcherResult Add<T>(T item) where T : BaseIndexModel
+        public async Task<SearcherResult> Add<T>(T item) where T : BaseIndexModel
         {
             IndexDataType dataType = default(IndexDataType);
 
@@ -103,7 +104,7 @@ namespace Td.Kylin.Searcher
 
             var dicParameter = DicMapper.ToMap(item);
 
-            return DoWork(dicParameter, config);
+            return await DoWork(dicParameter, config);
         }
 
         /// <summary>
@@ -111,7 +112,7 @@ namespace Td.Kylin.Searcher
         /// </summary>
         /// <param name="dataType"><seealso cref="IndexDataType"/>成员</param>
         /// <param name="dataID"></param>
-        public SearcherResult Modify(IndexDataType dataType, long dataID)
+        public async Task<SearcherResult> Modify(IndexDataType dataType, long dataID)
         {
             var config = ApiConfigRoot.Configs.FirstOrDefault(p => p.DataType == dataType && p.ActionMode == ActionMode.ModifyByID);
 
@@ -128,7 +129,7 @@ namespace Td.Kylin.Searcher
             Dictionary<string, string> dicParameter = new Dictionary<string, string>();
             dicParameter.Add(parameterName, dataID.ToString());
 
-            return DoWork(dicParameter, config);
+            return await DoWork(dicParameter, config);
         }
 
         /// <summary>
@@ -137,7 +138,7 @@ namespace Td.Kylin.Searcher
         /// <typeparam name="T"></typeparam>
         /// <param name="item"></param>
         /// <returns></returns>
-        public SearcherResult Modify<T>(T item) where T : BaseIndexModel
+        public async Task<SearcherResult> Modify<T>(T item) where T : BaseIndexModel
         {
             IndexDataType dataType = default(IndexDataType);
 
@@ -164,7 +165,7 @@ namespace Td.Kylin.Searcher
 
             var dicParameter = DicMapper.ToMap(item);
 
-            return DoWork(dicParameter, config);
+            return await DoWork(dicParameter, config);
         }
 
         /// <summary>
@@ -173,7 +174,7 @@ namespace Td.Kylin.Searcher
         /// <param name="dataType"><seealso cref="IndexDataType"/>成员</param>
         /// <param name="dataID">数据ID</param>
         /// <returns></returns>
-        public SearcherResult Delete(IndexDataType dataType, long dataID)
+        public async Task<SearcherResult> Delete(IndexDataType dataType, long dataID)
         {
             var config = ApiConfigRoot.Configs.FirstOrDefault(p => p.DataType == dataType && p.ActionMode == ActionMode.Delete);
 
@@ -190,7 +191,7 @@ namespace Td.Kylin.Searcher
             Dictionary<string, string> dicParameter = new Dictionary<string, string>();
             dicParameter.Add(parameterName, dataID.ToString());
 
-            return DoWork(dicParameter, config);
+            return await DoWork(dicParameter, config);
         }
 
         /// <summary>
@@ -200,9 +201,9 @@ namespace Td.Kylin.Searcher
         /// <param name="parameters">参数集</param>
         /// <param name="config"><seealso cref="ApiConfig"/>Api配置</param>
         /// <returns></returns>
-        private SearcherResult DoWork(Dictionary<string, string> parameters, ApiConfig config)
+        private async Task<SearcherResult> DoWork(Dictionary<string, string> parameters, ApiConfig config)
         {
-            return DoWork(0, 0, 0, parameters, config);
+            return await DoWork(0, 0, 0, parameters, config);
         }
 
         /// <summary>
@@ -212,28 +213,31 @@ namespace Td.Kylin.Searcher
         /// <param name="parameters">参数集</param>
         /// <param name="config"><seealso cref="ApiConfig"/>Api配置</param>
         /// <returns></returns>
-        private SearcherResult DoWork(int areaID, double lbsLongitude, double lbsLatitude, Dictionary<string, string> parameters, ApiConfig config)
+        private async Task<SearcherResult> DoWork(int areaID, double lbsLongitude, double lbsLatitude, Dictionary<string, string> parameters, ApiConfig config)
         {
-            if (null == config || string.IsNullOrWhiteSpace(config.Url))
-                return new SearcherResult
-                {
-                    Content = "接口配置信息无效",
-                    Exception = null,
-                    StatusCode = 0,
-                    Timespan = TimeSpan.Zero
-                };
-
-            using (var client = new SearcherHttpContext())
+            return await Task.Run(() =>
             {
-                if (config.RequestMode == Enums.RequestMode.Post)
+                if (null == config || string.IsNullOrWhiteSpace(config.Url))
+                    return new SearcherResult
+                    {
+                        Content = "接口配置信息无效",
+                        Exception = null,
+                        StatusCode = 0,
+                        Timespan = TimeSpan.Zero
+                    };
+
+                using (var client = new SearcherHttpContext())
                 {
-                    return client.DoPost(areaID, lbsLongitude, lbsLatitude, config.Url, parameters, ApiConfigRoot.PartnerID, ApiConfigRoot.Secret);
+                    if (config.RequestMode == Enums.RequestMode.Post)
+                    {
+                        return client.DoPost(areaID, lbsLongitude, lbsLatitude, config.Url, parameters, ApiConfigRoot.PartnerID, ApiConfigRoot.Secret);
+                    }
+                    else
+                    {
+                        return client.DoGet(areaID, lbsLongitude, lbsLatitude, config.Url, parameters, ApiConfigRoot.PartnerID, ApiConfigRoot.Secret);
+                    }
                 }
-                else
-                {
-                    return client.DoPost(areaID, lbsLongitude, lbsLatitude, config.Url, parameters, ApiConfigRoot.PartnerID, ApiConfigRoot.Secret);
-                }
-            }
+            });
         }
     }
 }

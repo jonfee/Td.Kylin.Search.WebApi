@@ -34,6 +34,8 @@ namespace Td.Kylin.Searcher
 
         public Task Invoke(HttpContext context)
         {
+            ApiConfigRoot.PartnerID = _partnerID;
+            ApiConfigRoot.Secret = _secret;
             ApiConfigRoot.Configs = _configs;
 
             return _next(context);

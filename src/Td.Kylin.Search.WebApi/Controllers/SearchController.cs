@@ -849,7 +849,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
             foreach (var t in dataTypes)
             {
                 Query qt = new QueryParser(IndexConfiguration.LuceneMatchVersion, "datatype", analyzer).Parse(t.ToString("d"));
-                bquery.Add(qt, Occur.SHOULD);
+                typeQuery.Add(qt, Occur.SHOULD);
             }
 
             bquery.Add(typeQuery, Occur.MUST);
