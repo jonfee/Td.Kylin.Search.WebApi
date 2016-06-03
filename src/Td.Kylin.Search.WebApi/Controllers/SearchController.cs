@@ -490,7 +490,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
         */
         [HttpGet("union")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Use)]
-        public IActionResult SearchUnion(string datatypes,string keyword, int pageIndex, int pageSize)
+        public IActionResult SearchUnion(string datatypes, string keyword, int pageIndex, int pageSize)
         {
             int count = 0;
 
@@ -502,7 +502,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
 
                 string[] arr = datatypes.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                foreach(var tp in arr)
+                foreach (var tp in arr)
                 {
                     var t = (IndexDataType)Enum.Parse(typeof(IndexDataType), tp);
 
