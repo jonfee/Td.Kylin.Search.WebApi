@@ -91,7 +91,7 @@ namespace Td.Kylin.Search.WebApi
             string redisConn = Configuration["Redis:ConnectString"];//Redis缓存服务器信息
             var sqlConn = Configuration["Data:DefaultConnection:ConnectionString"];
 
-            app.UseDataCache(redisConn, sqlType, sqlConn);
+            app.UseDataCache(true, redisConn, sqlType, sqlConn, null, false);
 
             app.UseKylinWebApi(Configuration["ServerId"], sqlConn, sqlType);
 

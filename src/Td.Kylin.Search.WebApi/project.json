@@ -14,7 +14,7 @@
     "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
-    "Td.Kylin.DataCache": "1.0.14-rc1",
+    "Td.Kylin.DataCache": "1.1.107-rc1",
     "Td.Kylin.Entity": "1.0.0-rc1-37",
     "Td.Kylin.EnumLibrary": "1.0.37-bata",
     "Td.Kylin.WebApi": "1.0.0-rc1-93",
