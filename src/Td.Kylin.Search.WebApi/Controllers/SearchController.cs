@@ -145,9 +145,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Use)]
         public IActionResult Search(int areaID, string keyword, int pageIndex, int pageSize)
         {
-            string[] fields = new[] { "name", "desc" };
+            string[] fields = new[] { "name" };//, "desc"
 
-            Occur[] flags = new Occur[] { Occur.SHOULD, Occur.SHOULD };
+            Occur[] flags = new Occur[] { Occur.SHOULD };//, Occur.SHOULD
 
             Sort sort = new Sort(new SortField("updatetime", SortField.STRING, true));
 
@@ -290,9 +290,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
         {
             if (string.IsNullOrWhiteSpace(typeLen)) typeLen = string.Empty;
 
-            string[] fields = new[] { "name", "desc" };
+            string[] fields = new[] { "name" };//, "desc"
 
-            Occur[] flags = new Occur[] { Occur.SHOULD, Occur.SHOULD };
+            Occur[] flags = new Occur[] { Occur.SHOULD };//, Occur.SHOULD 
 
             Sort sort = new Sort(new SortField("updatetime", SortField.STRING, true));
 
@@ -784,7 +784,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
                 case IndexDataType.MerchantProduct: indexPath = IndexConfiguration.GetMerchantProductPath(); break;
             }
 
-            List<string> fields = new List<string> { "name", "desc" };
+            List<string> fields = new List<string> { "name" };//, "desc"
 
             BooleanQuery bquery = new BooleanQuery();
 
@@ -792,7 +792,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
             Analyzer analyzer = new StandardAnalyzer(IndexConfiguration.LuceneMatchVersion);
 
             //搜索条件
-            Query kwdQuery = MultiFieldQueryParser.Parse(IndexConfiguration.LuceneMatchVersion, keyword, fields.ToArray(), new Occur[] { Occur.SHOULD, Occur.SHOULD }, analyzer);
+            Query kwdQuery = MultiFieldQueryParser.Parse(IndexConfiguration.LuceneMatchVersion, keyword, fields.ToArray(), new Occur[] { Occur.SHOULD }, analyzer);//, Occur.SHOULD
             bquery.Add(kwdQuery, Occur.MUST);
 
             if (areaID.HasValue && areaID.Value > 0)
@@ -829,7 +829,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
 
             string indexPath = IndexConfiguration.GetAreaPath(areaID);
 
-            List<string> fields = new List<string> { "name", "desc" };
+            List<string> fields = new List<string> { "name" };//, "desc" 
 
             BooleanQuery bquery = new BooleanQuery();
 
@@ -837,7 +837,7 @@ namespace Td.Kylin.Search.WebApi.Controllers
             Analyzer analyzer = new StandardAnalyzer(IndexConfiguration.LuceneMatchVersion);
 
             //关键词搜索条件
-            Query kwdQuery = MultiFieldQueryParser.Parse(IndexConfiguration.LuceneMatchVersion, keyword, fields.ToArray(), new Occur[] { Occur.SHOULD, Occur.SHOULD }, analyzer);
+            Query kwdQuery = MultiFieldQueryParser.Parse(IndexConfiguration.LuceneMatchVersion, keyword, fields.ToArray(), new Occur[] { Occur.SHOULD }, analyzer);//, Occur.SHOULD
             bquery.Add(kwdQuery, Occur.MUST);
 
             //区域条件
