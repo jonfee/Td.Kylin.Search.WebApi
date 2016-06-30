@@ -1,19 +1,19 @@
 {
-  "version": "1.0.0-rc1-15",
+  "version": "1.1.0",
   "description": "Td.Kylin.Searcher Class Library",
   "authors": [ "jonfee" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
-
-  "frameworks": {
-    "dnx451": { },
-    "dnxcore50": { }
-  },
   "dependencies": {
-    "System.Net.Http": "4.0.1-beta-23516",
-    "Td.AspNet.Utils": "1.0.0-rc1-29",
-    "System.Runtime.Extensions": "4.0.11-beta-23516",
-    "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final"
+    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+    "NETStandard.Library": "1.6.0",
+    "Td.AspNet.Utils": "1.1.0"
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  },
+  "buildOptions": {
+    "optimize": true,
+    "xmlDoc": true
   }
 }
