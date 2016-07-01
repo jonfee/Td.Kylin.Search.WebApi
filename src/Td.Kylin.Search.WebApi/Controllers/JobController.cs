@@ -28,9 +28,9 @@ namespace Td.Kylin.Search.WebApi.Controllers
 
                 if (null != list)
                 {
-                    var cacheOpenAreas = CacheCollection.OpenAreaCache.Value();
+                    //var cacheOpenAreas = CacheCollection.OpenAreaCache.Value();
 
-                    var openAreas = cacheOpenAreas.Select(p => p.AreaID).ToList();
+                    //var openAreas = cacheOpenAreas.Select(p => p.AreaID).ToList();
 
                     foreach (var item in list)
                     {
@@ -115,6 +115,12 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     item.Desc = string.Empty;
                     item.UpdateTime = item.CreateTime;
 
+                    var area = item.AreaID.ToString();
+                    if (area.Length == 6)
+                    {
+                        item.AreaID = int.Parse(area.Remove(4) + "00");
+                    }
+
                     AreaIndexManager.Instance.Insert(item);
                     JobIndexManager.Instance.Insert(item);
                 }
@@ -140,17 +146,28 @@ namespace Td.Kylin.Search.WebApi.Controllers
         {
             await Task.Run(() =>
             {
-                if (!areaID.HasValue || areaID < 100000)
+                int tempArea = 0;
+
+                if (!areaID.HasValue)
                 {
-                    var layer = JobProvider.GetJobAreaLayer(jobID);
-
-                    var cacheOpenAreas = CacheCollection.OpenAreaCache.Value();
-
-                    areaID = AreaHelper.GetOpenAreaID(layer, cacheOpenAreas);
+                    var _area = areaID.ToString();
+                    if (_area.Length == 6)
+                    {
+                        tempArea = int.Parse(_area.Remove(4) + "00");
+                    }
                 }
-                
-                AreaIndexManager.Instance.Delete(Enums.IndexDataType.Job,areaID.Value,jobID);
-                JobIndexManager.Instance.Delete(Enums.IndexDataType.Job,areaID.Value,jobID);
+
+                if (tempArea == 0)
+                {
+                    var job = JobProvider.GetJob(jobID);
+
+                    if (job == null) return;
+
+                    tempArea = job.AreaID;
+                }
+
+                AreaIndexManager.Instance.Delete(Enums.IndexDataType.Job, tempArea, jobID);
+                JobIndexManager.Instance.Delete(Enums.IndexDataType.Job, tempArea, jobID);
             });
         }
 
@@ -226,6 +243,12 @@ namespace Td.Kylin.Search.WebApi.Controllers
                     item.Pic = string.Empty;
                     item.Desc = string.Empty;
                     item.UpdateTime = DateTime.Now;
+
+                    var area = item.AreaID.ToString();
+                    if (area.Length == 6)
+                    {
+                        item.AreaID = int.Parse(area.Remove(4) + "00");
+                    }
 
                     AreaIndexManager.Instance.Modify(item);
                     JobIndexManager.Instance.Modify(item);

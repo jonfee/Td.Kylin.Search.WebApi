@@ -52,7 +52,19 @@ namespace Td.Kylin.Search.WebApi.Data
                                 WordAddress = j.WordAddress
                             };
 
-                return query.ToList();
+                var list= query.ToList();
+
+                list.ForEach((item) =>
+                {
+                    var _areaid = item.AreaID.ToString();
+                    if (_areaid.Length == 6)
+                    {
+                        _areaid = _areaid.Remove(4) + "00";
+                    }
+                    item.AreaID = int.Parse(_areaid);
+                });
+
+                return list;
             }
         }
 
@@ -118,6 +130,16 @@ namespace Td.Kylin.Search.WebApi.Data
                             };
 
                 var item = query.FirstOrDefault();
+
+                if (null != item)
+                {
+                    var _areaid = item.AreaID.ToString();
+                    if (_areaid.Length == 6)
+                    {
+                        _areaid = _areaid.Remove(4) + "00";
+                    }
+                    item.AreaID = int.Parse(_areaid);
+                }
 
                 return item;
             }

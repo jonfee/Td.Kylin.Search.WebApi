@@ -7145,7 +7145,7 @@
     },
     "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
       "type": "package",
-      "sha512": "2+V/VDgZu59Thrlp+FQH38H/SmPBegMKsG0ie1ZZyHtx7kJNEozIx/p9zs0UrolX0uyYX7Ouoj3Q3Be15lqXxA==",
+      "sha512": "E7VdmGw6xO3VHWapC+pNLZmo6yncS53UY3bmb5WZm9wliJBB1A6brgzKA4fcqiLrmJFx71r0M2zEbRDphRLUNg==",
       "files": [
         "analyzers/dotnet/cs/Microsoft.CodeAnalysis.Analyzers.dll",
         "analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.Analyzers.dll",
@@ -7161,7 +7161,7 @@
     },
     "Microsoft.CodeAnalysis.Common/1.1.0-rc1-20151109-01": {
       "type": "package",
-      "sha512": "5eea4BzS8/ge6aVWbweZ3LxMZumN7lm1hPPjSn3iAS3yi1ozsg1aCZ+lHq2nbS/ZNT+Z3QmTcmKaQd3b4bTqeA==",
+      "sha512": "gC9zpQARTjIOht1dZM5Bp0fbOKA40yh0wHBMG2psLGquche0URbfdB9i1pnCusLospEsRIrNvYl75647BcBVug==",
       "files": [
         "lib/net45/Microsoft.CodeAnalysis.dll",
         "lib/net45/Microsoft.CodeAnalysis.xml",
@@ -7175,7 +7175,7 @@
     },
     "Microsoft.CodeAnalysis.CSharp/1.1.0-rc1-20151109-01": {
       "type": "package",
-      "sha512": "2u8FpEIzbjvW6kveLYDwVgrrw7rkqN123dQSMLL3aRBcNFpKL4+hJkrU5uutsVNmjrzxjQkrSKQjIw6L2yjU9w==",
+      "sha512": "BFhSWMMlp0xLN/ogn71ULN7N0yy/yqJf/wu63x3KjV497n+8OlyiX7ZnbaQiUeafjW5P2vLzvZH99+5s+dH3Dg==",
       "files": [
         "lib/net45/Microsoft.CodeAnalysis.CSharp.dll",
         "lib/net45/Microsoft.CodeAnalysis.CSharp.xml",
@@ -7977,7 +7977,7 @@
     "System.Diagnostics.DiagnosticSource/4.0.0-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "WHVhr5/p8UDjqNV7l9PCxZgOufE2tO4XOWva9pau9c7PzJJTdB1By6scO5dgHLpmlB/u4y27Y9AzT8AqtG8sxw==",
+      "sha512": "0uDR/UOmFCNPDCyHEPHhCrk6c1iRnDp00YqwSZ8Qf5aaaJjm4WXnf4Q9xZw4OoApsSiODSypDMdpQU24IxR16A==",
       "files": [
         "lib/dotnet5.2/System.Diagnostics.DiagnosticSource.dll",
         "lib/dotnet5.2/System.Diagnostics.DiagnosticSource.xml",
@@ -8166,7 +8166,7 @@
     "System.Numerics.Vectors/4.1.1-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "jphbCfQB30LZBC/8kNQtAaaCcKzCFIFnRyUvYapNOozvleUvwI6sYG9d3/WamMcalnNcHDgIlQ713QOv9aweVA==",
+      "sha512": "FCYCEjc3BXBTpVZTxMqf2m/sGYyDzLwICy5lNKgZzT8WfshJhsTGjJuETwsh1Cwi6bksw9YiTB6yeeWBBJDnTA==",
       "files": [
         "lib/dotnet5.4/System.Numerics.Vectors.dll",
         "lib/MonoAndroid10/_._",
@@ -8355,7 +8355,7 @@
     "System.Runtime/4.0.21-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "R174ctQjJnCIVxA2Yzp1v68wfLfPSROZWrbaSBcnEzHAQbOjprBQi37aWdr5y05Pq2J/O7h6SjTsYhVOLdiRYQ==",
+      "sha512": "ToYWwDgwR8fR9/8aaV+7PMFBfG2tEgGWED0l9OC9DQieaKEMAzXV3c6fOkK8FTd9YPjFcYnvx73tg21w6GuNDA==",
       "files": [
         "lib/DNXCore50/System.Runtime.dll",
         "lib/MonoAndroid10/_._",
@@ -8476,7 +8476,7 @@
     "System.Runtime.InteropServices/4.0.21-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "XRWX4yFPKQ3t3hbPReLB9d2ViTuGqMLYHGcuWteIYgoIaKtHp7Uae2xHjiUG/QZbVN6vUp+KnL04aIi5dOj8lQ==",
+      "sha512": "3QodORMX/J/HMQgeBf62yYLESn4g+Gl9XGKEoFNCHGUb03yWqpSVPOD0gSksyb661kRdxR5K4/7I9xjz/GxkRg==",
       "files": [
         "lib/DNXCore50/System.Runtime.InteropServices.dll",
         "lib/MonoAndroid10/_._",
@@ -8690,7 +8690,7 @@
     },
     "Td.AspNet.Upload/1.0.0-rc1-13": {
       "type": "package",
-      "sha512": "Z7zokqJ5FAiWKY413yuRElNwm1+CIQ/sFAospH+qx6U1vxPR75uWRlHZp/7zUeosGL88kWEZiTMMEut9ACSytg==",
+      "sha512": "rOU6muyE9qk7uoyJpIyucgEShHqaa3bqlfLoYIiRabinIzh6IlHyjYzILjuoBnXeR5OXE1wCOUPk8RUOwwZPEg==",
       "files": [
         "lib/dnx451/Td.AspNet.Upload.dll",
         "lib/dnx451/Td.AspNet.Upload.xml",
@@ -8716,7 +8716,7 @@
     },
     "Td.AspNet.WebApi/1.0.0-rc1-39": {
       "type": "package",
-      "sha512": "y90AEuD55ml6PgN8UFfB2xeirAq2n5Y0K29OXetouAhjoJTeBL9jU2wxsFAY6euSMmHyHjNTfwTlsvw0RolK9A==",
+      "sha512": "Tv3Iaf8gcNkmtPEg9T8EAnD3gJZQT16rQrfg0KIAf/QQf3ecrMF2Ya+03IqAey6S++ZsHO180Y8mRiZeHER5hQ==",
       "files": [
         "lib/dnx451/Td.AspNet.WebApi.dll",
         "lib/dnx451/Td.AspNet.WebApi.xml",
@@ -8742,7 +8742,7 @@
     },
     "Td.Kylin.DataCache/1.1.107-rc1": {
       "type": "package",
-      "sha512": "oCoM3bSNV4DgzcBpnHGuvFC5sqRVL/zuAiPedKUxch3CNlprNDOHwe5MrgY2/kGZwbz6dPiPZzuxycmQ898TSQ==",
+      "sha512": "ik09Cs2zR2Qqs6WHwZWZmZ9DNnoFgEbgK8aB4+A+F9JbEeVh7LjF0zfgkMDH92Uaf5hI6345U/0fdYA6k1nQeA==",
       "files": [
         "lib/dnx451/Td.Kylin.DataCache.dll",
         "lib/dnx451/Td.Kylin.DataCache.xml",
@@ -8757,12 +8757,14 @@
     },
     "Td.Kylin.Entity/1.0.0-rc1-37": {
       "type": "package",
-      "sha512": "tdNgIvBbJm6uyIvlFkclHkZ1rfkE6tnyC1qOIkpidSUeIx5NK2nTtFFFy6zgJMADoBO/5GGTCYgqfFB3hOOgKw==",
+      "sha512": "aCE3cgbIyZWsMMNfsVFFfZoeig1MnKJmbg8VOKiRGw39GJ5qFqqrlb2ZkYGHtOzqXW9GlxT1nlPPip1W7X+eKA==",
       "files": [
         "lib/dnx451/Td.Kylin.Entity.dll",
         "lib/dnx451/Td.Kylin.Entity.xml",
         "lib/dnxcore50/Td.Kylin.Entity.dll",
         "lib/dnxcore50/Td.Kylin.Entity.xml",
+        "lib/net46/Td.Kylin.Entity.dll",
+        "lib/net46/Td.Kylin.Entity.xml",
         "Td.Kylin.Entity.1.0.0-rc1-37.nupkg",
         "Td.Kylin.Entity.1.0.0-rc1-37.nupkg.sha512",
         "Td.Kylin.Entity.nuspec"
@@ -8770,7 +8772,7 @@
     },
     "Td.Kylin.EnumLibrary/1.0.37-bata": {
       "type": "package",
-      "sha512": "GRgYqWhjVrF4ZginGRI6ZUs+swCcx9o/4fXVaCdjjVHsPFlFtN377ByQwFakVzCkynWqlz8fhTH8UKcBF8VmZA==",
+      "sha512": "pq/kE0KBJBeA2CsRBVboasu/aDHOejDVia3XayYXT1kVBFOdYBhZYZUPyGO0wPGa07u4Npg9ckrGL9NOOnxkmQ==",
       "files": [
         "lib/dnx451/Td.Kylin.EnumLibrary.dll",
         "lib/dnx451/Td.Kylin.EnumLibrary.xml",
@@ -8791,7 +8793,7 @@
     },
     "Td.Kylin.Redis/1.1.100-alpha": {
       "type": "package",
-      "sha512": "qHFVXxJ1lSVPK8oUeMAwA6Su5fXGHxL6+6AGms99e5TYgzlc9v8VTnLKyQ9TbYdaMzvjoxXOYseFZzySoBuiuA==",
+      "sha512": "059LHHB5lJT8MHGEMF1i20CUTp+P/ZLYBhfm+p+U0h4xVVMF9gQRzSz9IoB/C3o4FBqtpAYyBaQMQtn9JIAw5Q==",
       "files": [
         "lib/dnx451/Td.Kylin.Redis.dll",
         "lib/dnx451/Td.Kylin.Redis.xml",
@@ -8806,7 +8808,7 @@
     },
     "Td.Kylin.WebApi/1.0.0-rc1-93": {
       "type": "package",
-      "sha512": "HfoCVbtWcv7rWQyyNCl1E8xVmYZjrNnEC4cZNHp0zASzuhHmxGELylHPPwXIbj+P1sBwKUBRV/7kI3QKnkaiXw==",
+      "sha512": "K/Mim5FH6d5AJD0RBRqKWLh/rjlwTJemX1+MVax/7SRGQdEcWQV6CYzzCY7YEAeeD/uPRYujLLRtcPgLZym1DA==",
       "files": [
         "lib/dnx451/Td.Kylin.WebApi.dll",
         "lib/dnx451/Td.Kylin.WebApi.xml",
@@ -8819,7 +8821,7 @@
     },
     "Td.Web/1.0.2.3-beta": {
       "type": "package",
-      "sha512": "FOK49oT9by44G71kDyUGZ+pO599cHKvduoSOWdM3bMumtDMF1zB511ObxrSKaH9rGETsBEpPNKBlZQs3PeTpQA==",
+      "sha512": "Rvj7R+G7MsIXFBPEadLPZgg1xAZ07HkLC/4gIz70LXup4EG0jla/GB2/Ni0KHPpgRso3TufSPI2pnRcYJ+c+qA==",
       "files": [
         "lib/dnx451/Td.Web.dll",
         "lib/dnx451/Td.Web.xml",
