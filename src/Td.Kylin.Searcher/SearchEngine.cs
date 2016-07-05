@@ -13,6 +13,9 @@ namespace Td.Kylin.Searcher
     /// </summary>
     public class SearchEngine
     {
+        /// <summary>
+        /// 初始化一个<seealso cref="SearchEngine"/>实例
+        /// </summary>
         public SearchEngine()
         {
             if (string.IsNullOrWhiteSpace(ApiConfigRoot.PartnerID))
@@ -197,7 +200,6 @@ namespace Td.Kylin.Searcher
         /// <summary>
         /// 执行请求
         /// </summary>
-        /// <param name="areaID">数据所在区域ID</param>
         /// <param name="parameters">参数集</param>
         /// <param name="config"><seealso cref="ApiConfig"/>Api配置</param>
         /// <returns></returns>
@@ -209,7 +211,9 @@ namespace Td.Kylin.Searcher
         /// <summary>
         /// 执行请求
         /// </summary>
-        /// <param name="areaID">数据所在区域ID</param>
+        /// <param name="areaID">区域ID</param>
+        /// <param name="lbsLatitude">位置纬度</param>
+        /// <param name="lbsLongitude">位置经度</param>
         /// <param name="parameters">参数集</param>
         /// <param name="config"><seealso cref="ApiConfig"/>Api配置</param>
         /// <returns></returns>

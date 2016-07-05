@@ -1,17 +1,24 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.2",
+  
   "description": "Td.Kylin.Searcher Class Library",
   "authors": [ "jonfee" ],
+
   "dependencies": {
     "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
     "NETStandard.Library": "1.6.0",
-    "Td.AspNet.Utils": "1.1.0"
+    "Td.AspNet.Utils": "1.1.2",
   },
   "frameworks": {
+    "net452": {},
+    "net46": {},
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+      }
     }
   },
+
   "buildOptions": {
     "optimize": true,
     "xmlDoc": true

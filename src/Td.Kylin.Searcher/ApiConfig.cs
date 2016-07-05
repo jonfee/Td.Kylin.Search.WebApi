@@ -18,6 +18,9 @@ namespace Td.Kylin.Searcher
         /// </summary>
         public string ActionModeName { get; set; }
 
+        /// <summary>
+        /// 索引数据类型
+        /// </summary>
         public IndexDataType DataType
         {
             get
@@ -26,6 +29,9 @@ namespace Td.Kylin.Searcher
             }
         }
 
+        /// <summary>
+        /// 索引操作方式
+        /// </summary>
         public ActionMode ActionMode
         {
             get
