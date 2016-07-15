@@ -1,15 +1,10 @@
 ﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
-using Lucene.Net.Documents;
-using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
-using Lucene.Net.Store;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using Td.Kylin.Search.WebApi.Core;
 using Td.Kylin.Search.WebApi.Enums;
 using Td.Kylin.Search.WebApi.IndexModel;

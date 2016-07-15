@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Td.Kylin.Search.WebApi.Core;
 using Td.Kylin.Search.WebApi.Data;
 using Td.Kylin.Search.WebApi.IndexModel;
 using Td.Kylin.Search.WebApi.WriterManager;

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-using Td.Kylin.WebApi;
-using Td.Kylin.WebApi.Filters;
 using Td.Kylin.Search.WebApi.Data;
-using Td.Kylin.Search.WebApi.Core;
-using Td.Kylin.DataCache;
 using Td.Kylin.Search.WebApi.IndexModel;
 using Td.Kylin.Search.WebApi.WriterManager;
+using Td.Kylin.WebApi;
+using Td.Kylin.WebApi.Filters;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 

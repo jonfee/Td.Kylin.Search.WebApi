@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.PlatformAbstractions;
 using System;
 using Td.Diagnostics;
 using Td.Kylin.DataCache;
 using Td.Kylin.EnumLibrary;
-using Td.Kylin.Search.WebApi.Core;
 using Td.Kylin.Search.WebApi.WriterManager;
 using Td.Kylin.WebApi;
 using Td.Web;
@@ -21,12 +19,13 @@ namespace Td.Kylin.Search.WebApi
         //wwwroot的根目录
         public static string WebRootPath { get; set; }
 
-        public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv)
+        public Startup(IHostingEnvironment env)
         {
-            Application.Start(new ApplicationContext(env, appEnv));
+            Application.Start(new ApplicationContext(env));
 
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
 
@@ -95,14 +94,10 @@ namespace Td.Kylin.Search.WebApi
 
             app.UseKylinWebApi(Configuration["ServerId"], sqlConn, sqlType);
 
-            app.UseIISPlatformHandler();
-
             app.UseStaticFiles();
 
             app.UseMvc();
         }
-
-        // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+        
     }
 }
