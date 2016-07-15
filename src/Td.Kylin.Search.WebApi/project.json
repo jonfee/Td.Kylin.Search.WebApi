@@ -17,7 +17,7 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Td.Kylin.Entity": "1.1.9",
     "Newtonsoft.Json": "9.0.1",
-    "Td.Kylin.DataCache": "1.2.6.2",
+    "Td.Kylin.DataCache": "1.2.7",
     "Td.Kylin.EnumLibrary": "1.2.1",
     "Td.Kylin.WebApi": "1.1.10",
     "z.PanGu.HighLight": "1.0.0.1",
@@ -27,7 +27,7 @@
     "Td.Web": "1.1.4",
     "System.Net.Security": "4.0.0",
     "System.Collections.NonGeneric": "4.0.1",
-    "System.Threading.ThreadPool": "4.0.10",
+    "System.Threading.ThreadPool": "4.0.10"
   },
 
   "tools": {

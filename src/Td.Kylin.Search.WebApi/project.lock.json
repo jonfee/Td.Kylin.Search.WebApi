@@ -1381,13 +1381,16 @@
           "lib/20/ICSharpCode.SharpZipLib.dll": {}
         }
       },
-      "StackExchange.Redis/1.1.604.200": {
+      "StackExchange.Redis/1.1.605": {
         "type": "package",
+        "frameworkAssemblies": [
+          "System.IO.Compression"
+        ],
         "compile": {
-          "lib/net46/StackExchange.Redis.dll": {}
+          "lib/net461/StackExchange.Redis.dll": {}
         },
         "runtime": {
-          "lib/net46/StackExchange.Redis.dll": {}
+          "lib/net461/StackExchange.Redis.dll": {}
         }
       },
       "System.AppContext/4.1.0": {
@@ -2341,7 +2344,7 @@
           "lib/net452/Td.CoreLibrary.dll": {}
         }
       },
-      "Td.Kylin.DataCache/1.2.6.2": {
+      "Td.Kylin.DataCache/1.2.7": {
         "type": "package",
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.Core": "1.0.0",
@@ -2349,9 +2352,9 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
           "Newtonsoft.Json": "9.0.1",
           "System.ComponentModel.Primitives": "4.1.0",
-          "Td.Kylin.Entity": "1.1.8",
+          "Td.Kylin.Entity": "1.1.9",
           "Td.Kylin.EnumLibrary": "1.2.1",
-          "Td.Kylin.Redis": "1.2.10.1"
+          "Td.Kylin.Redis": "1.2.12"
         },
         "frameworkAssemblies": [
           "System.IO",
@@ -2367,10 +2370,10 @@
           "System.Xml.ReaderWriter"
         ],
         "compile": {
-          "lib/net46/Td.Kylin.DataCache.dll": {}
+          "lib/net461/Td.Kylin.DataCache.dll": {}
         },
         "runtime": {
-          "lib/net46/Td.Kylin.DataCache.dll": {}
+          "lib/net461/Td.Kylin.DataCache.dll": {}
         }
       },
       "Td.Kylin.Entity/1.1.9": {
@@ -2397,19 +2400,19 @@
           "lib/net46/Td.Kylin.EnumLibrary.dll": {}
         }
       },
-      "Td.Kylin.Redis/1.2.10.1": {
+      "Td.Kylin.Redis/1.2.12": {
         "type": "package",
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.Core": "1.0.0",
           "NETStandard.Library": "1.6.0",
           "Newtonsoft.Json": "9.0.1",
-          "StackExchange.Redis": "1.1.604.200"
+          "StackExchange.Redis": "1.1.605"
         },
         "compile": {
-          "lib/net46/Td.Kylin.Redis.dll": {}
+          "lib/net461/Td.Kylin.Redis.dll": {}
         },
         "runtime": {
-          "lib/net46/Td.Kylin.Redis.dll": {}
+          "lib/net461/Td.Kylin.Redis.dll": {}
         }
       },
       "Td.Kylin.WebApi/1.1.10": {
@@ -3716,19 +3719,22 @@
         "lib/SL4/SharpZipLib.Silverlight4.dll"
       ]
     },
-    "StackExchange.Redis/1.1.604.200": {
-      "sha512": "Mvzot26ILOKfOlLJZSTH4DTwOvmHIbnshJVnjv/xyG0n2hFYhfkvcWlBmXKSr1enGy60j/fm6sUyKIf5EdO1/A==",
+    "StackExchange.Redis/1.1.605": {
+      "sha512": "0tWpRS8em+tJrimCLRdgXrbKl5leCQ03k/nb0rWFT86TJ5YhaRDTE+ogrGQozPw/RtRkaNicx5oIBLdPHXA6gA==",
       "type": "package",
-      "path": "StackExchange.Redis/1.1.604.200",
+      "path": "StackExchange.Redis/1.1.605",
       "files": [
-        "StackExchange.Redis.1.1.604.200.nupkg.sha512",
+        "StackExchange.Redis.1.1.605.nupkg.sha512",
         "StackExchange.Redis.nuspec",
-        "lib/net452/StackExchange.Redis.dll",
-        "lib/net452/StackExchange.Redis.xml",
+        "lib/net40/StackExchange.Redis.dll",
+        "lib/net40/StackExchange.Redis.xml",
+        "lib/net45/StackExchange.Redis.dll",
+        "lib/net45/StackExchange.Redis.xml",
         "lib/net46/StackExchange.Redis.dll",
         "lib/net46/StackExchange.Redis.xml",
+        "lib/net461/StackExchange.Redis.dll",
+        "lib/net461/StackExchange.Redis.xml",
         "lib/netstandard1.6/StackExchange.Redis.dll",
-        "lib/netstandard1.6/StackExchange.Redis.pdb",
         "lib/netstandard1.6/StackExchange.Redis.xml"
       ]
     },
@@ -7322,17 +7328,19 @@
         "lib/netstandard1.6/Td.CoreLibrary.xml"
       ]
     },
-    "Td.Kylin.DataCache/1.2.6.2": {
-      "sha512": "lrh5Zf+jFoSeufHBhfHzYVgv26DoRpHftsltL7EzzDJLBmQxlB+If9GTn4KVSkRgr4Khfg93qp8ch86poeHXRA==",
+    "Td.Kylin.DataCache/1.2.7": {
+      "sha512": "J+hHxJ5KyzejF84V2fjmOYo44wJdltZ7ocmYWRZqSeJruXuikxJC2CVS1n5aan2xgVoT72Krku4ZzKJpFd7YSw==",
       "type": "package",
-      "path": "Td.Kylin.DataCache/1.2.6.2",
+      "path": "Td.Kylin.DataCache/1.2.7",
       "files": [
-        "Td.Kylin.DataCache.1.2.6.2.nupkg.sha512",
+        "Td.Kylin.DataCache.1.2.7.nupkg.sha512",
         "Td.Kylin.DataCache.nuspec",
         "lib/net452/Td.Kylin.DataCache.dll",
         "lib/net452/Td.Kylin.DataCache.xml",
         "lib/net46/Td.Kylin.DataCache.dll",
         "lib/net46/Td.Kylin.DataCache.xml",
+        "lib/net461/Td.Kylin.DataCache.dll",
+        "lib/net461/Td.Kylin.DataCache.xml",
         "lib/netstandard1.6/Td.Kylin.DataCache.dll",
         "lib/netstandard1.6/Td.Kylin.DataCache.xml"
       ]
@@ -7364,17 +7372,19 @@
         "lib/netstandard1.6/Td.Kylin.EnumLibrary.dll"
       ]
     },
-    "Td.Kylin.Redis/1.2.10.1": {
-      "sha512": "dfSsw3wF1IkauvJApkSCXf0wMi3UB1e74LR6GSK83Yj6o/Oz6p50F1Y0pD+8kTvn4mSnZcGw/kO4AHr19ZkqUw==",
+    "Td.Kylin.Redis/1.2.12": {
+      "sha512": "3g6zJp6JMKiBOSQaUzwr4ilT26p7FwvQWZKS4BaJhOnf3sWL52PhxLSztXi34L/wdN5+3fthJA0qjA+O/mwkUw==",
       "type": "package",
-      "path": "Td.Kylin.Redis/1.2.10.1",
+      "path": "Td.Kylin.Redis/1.2.12",
       "files": [
-        "Td.Kylin.Redis.1.2.10.1.nupkg.sha512",
+        "Td.Kylin.Redis.1.2.12.nupkg.sha512",
         "Td.Kylin.Redis.nuspec",
         "lib/net452/Td.Kylin.Redis.dll",
         "lib/net452/Td.Kylin.Redis.xml",
         "lib/net46/Td.Kylin.Redis.dll",
         "lib/net46/Td.Kylin.Redis.xml",
+        "lib/net461/Td.Kylin.Redis.dll",
+        "lib/net461/Td.Kylin.Redis.xml",
         "lib/netstandard1.6/Td.Kylin.Redis.dll",
         "lib/netstandard1.6/Td.Kylin.Redis.xml"
       ]
@@ -7468,7 +7478,7 @@
       "System.Net.Security >= 4.0.0",
       "System.Threading.ThreadPool >= 4.0.10",
       "Td.CoreLibrary >= 1.2.5",
-      "Td.Kylin.DataCache >= 1.2.6.2",
+      "Td.Kylin.DataCache >= 1.2.7",
       "Td.Kylin.Entity >= 1.1.9",
       "Td.Kylin.EnumLibrary >= 1.2.1",
       "Td.Kylin.WebApi >= 1.1.10",
