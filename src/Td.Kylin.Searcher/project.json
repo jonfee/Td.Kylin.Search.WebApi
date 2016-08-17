@@ -1,5 +1,5 @@
 {
-  "version": "1.1.2",
+  "version": "2.0.0",
   
   "description": "Td.Kylin.Searcher Class Library",
   "authors": [ "jonfee" ],
@@ -7,7 +7,7 @@
   "dependencies": {
     "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
     "NETStandard.Library": "1.6.0",
-    "Td.AspNet.Utils": "1.1.2",
+    "Td.AspNet.Utils": "1.1.2"
   },
   "frameworks": {
     "net452": {},
