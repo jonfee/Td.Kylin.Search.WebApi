@@ -19,6 +19,9 @@ namespace Td.Kylin.Search.WebApi
         //wwwroot的根目录
         public static string WebRootPath { get; set; }
 
+        private static SqlProviderType _sqlType;
+        private static string _sqlConn;
+
         public Startup(IHostingEnvironment env)
         {
             Application.Start(new ApplicationContext(env));
@@ -32,6 +35,35 @@ namespace Td.Kylin.Search.WebApi
             WebRootPath = env.WebRootPath;
 
             Configuration = builder.Build();
+
+            _sqlType = new Func<SqlProviderType>(() =>
+            {
+                string sqltype = Configuration["Data:SqlType"] ?? string.Empty;
+
+                switch (sqltype.ToLower())
+                {
+                    case "npgsql":
+                        return SqlProviderType.NpgSQL;
+                    case "mssql":
+                    default:
+                        return SqlProviderType.SqlServer;
+                }
+            }).Invoke();
+
+            _sqlConn = Configuration["Data:DefaultConnection:ConnectionString"];
+            string redisConn = Configuration["Redis:ConnectString"];//Redis缓存服务器信息
+
+            //使用缓存
+            DataCacheExtensions.UseDataCache(new DataCacheServerOptions
+            {
+                KeepAlive = true,
+                CacheItems = null,
+                RedisConnectionString = redisConn,
+                InitIfNull = false,
+                SqlType = _sqlType,
+                SqlConnection = _sqlConn,
+                Level2CacheSeconds = int.Parse(Configuration["Redis:Level2CacheSeconds"])
+            });
 
             #region 开启线程 执行索引库写队列处理
 
@@ -70,34 +102,20 @@ namespace Td.Kylin.Search.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //loggerFactory.AddDebug();
-
-            SqlProviderType sqlType = new Func<SqlProviderType>(() =>
+            var log = new LogOptions()
             {
-                string sqltype = Configuration["Data:SqlType"] ?? string.Empty;
+                LogUrl = Configuration["Log:Url"],
+                ProgramVersion = Configuration["Log:ProgramVersion"],
+                RunEnvironmental = Configuration["Log:RunEnvironmental"],
+                SystemVersion = Configuration["Log:SystemVersion"]
+            };
 
-                switch (sqltype.ToLower())
-                {
-                    case "npgsql":
-                        return SqlProviderType.NpgSQL;
-                    case "mssql":
-                    default:
-                        return SqlProviderType.SqlServer;
-                }
-            }).Invoke();
-
-            string redisConn = Configuration["Redis:ConnectString"];//Redis缓存服务器信息
-            var sqlConn = Configuration["Data:DefaultConnection:ConnectionString"];
-
-            app.UseDataCache(true, redisConn, sqlType, sqlConn, null, false);
-
-            app.UseKylinWebApi(Configuration["ServerId"], sqlConn, sqlType);
+            app.UseKylinWebApi(Configuration["ServerId"], _sqlConn, _sqlType, log);
 
             app.UseStaticFiles();
 
             app.UseMvc();
         }
-        
+
     }
 }
