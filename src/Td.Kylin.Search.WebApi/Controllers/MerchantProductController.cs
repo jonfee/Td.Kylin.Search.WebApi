@@ -22,22 +22,22 @@ namespace Td.Kylin.Search.WebApi.Controllers
     {
         [HttpPost("init")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin)]
-        public async void Init()
+        public async Task InitAsync()
         {
             await Task.Run(() =>
-            {
-                var list = MerchantProductProvider.GetAllProductList();
+             {
+                 var list = MerchantProductProvider.GetAllProductList();
 
-                if (null != list)
-                {
-                    var cacheOpenAreas = CacheCollection.OpenAreaCache.Value();
-                    
-                    foreach (var item in list)
-                    {
-                        Update(item);
-                    }
-                }
-            }); 
+                 if (null != list)
+                 {
+                     //var cacheOpenAreas = CacheCollection.OpenAreaCache.Value();
+
+                     foreach (var item in list)
+                     {
+                         UpdateAsync(item);
+                     }
+                 }
+             });
         }
 
         /**
@@ -54,15 +54,21 @@ namespace Td.Kylin.Search.WebApi.Controllers
         */
         [HttpPost("add")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
-        public async void Add(long productID)
+        public async Task<bool> AddAsync(long productID)
         {
-            await Task.Run(() =>
-            {
-                var item = MerchantProductProvider.GetMerchantProduct(productID);
+            return await Task.Run(() =>
+              {
+                  var item = MerchantProductProvider.GetMerchantProduct(productID);
 
-                AreaIndexManager.Instance.Insert(item);
-                MerchantProductIndexManager.Instance.Insert(item);
-            });
+                  if (item != null)
+                  {
+                      AreaIndexManager.Instance.Insert(item);
+                      MerchantProductIndexManager.Instance.Insert(item);
+                      return true;
+                  }
+
+                  return false;
+              });
         }
 
         /**
@@ -96,21 +102,25 @@ namespace Td.Kylin.Search.WebApi.Controllers
         */
         [HttpPost("insert")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
-        public async void Insert(MerchantProduct item)
+        public async Task<bool> InsertAsync(MerchantProduct item)
         {
-            await Task.Run(() =>
-            {
-                if (null != item)
-                {
-                    item.DataType = Enums.IndexDataType.MerchantProduct;
-                    item.Pic = (item.Pic ?? string.Empty).Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
-                    item.Desc = string.Empty;
-                    item.UpdateTime = item.CreateTime;
+            return await Task.Run(() =>
+             {
+                 if (null != item)
+                 {
+                     item.DataType = Enums.IndexDataType.MerchantProduct;
+                     item.Pic = (item.Pic ?? string.Empty).Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                     item.Desc = string.Empty;
+                     item.UpdateTime = item.CreateTime;
 
-                    AreaIndexManager.Instance.Insert(item);
-                    MerchantProductIndexManager.Instance.Insert(item);
-                }
-            });
+                     AreaIndexManager.Instance.Insert(item);
+                     MerchantProductIndexManager.Instance.Insert(item);
+
+                     return true;
+                 }
+
+                 return false;
+             });
         }
 
         /**
@@ -128,22 +138,24 @@ namespace Td.Kylin.Search.WebApi.Controllers
         */
         [HttpPost("delete")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
-        public async void Delete(int? areaID, long productID)
+        public async Task<bool> DeleteAsync(int? areaID, long productID)
         {
-            await Task.Run(() =>
-            {
-                if (!areaID.HasValue || areaID < 100000)
-                {
-                    var layer = MerchantProductProvider.GetProductAreaLayer(productID);
+            return await Task.Run(() =>
+             {
+                 if (!areaID.HasValue || areaID < 100000)
+                 {
+                     var layer = MerchantProductProvider.GetProductAreaLayer(productID);
 
-                    var cacheOpenAreas = CacheCollection.OpenAreaCache.Value();
+                     var cacheOpenAreas = CacheCollection.OpenAreaCache.Value();
 
-                    areaID= AreaHelper.GetOpenAreaID(layer, cacheOpenAreas);
-                }
+                     areaID = AreaHelper.GetOpenAreaID(layer, cacheOpenAreas);
+                 }
 
-                AreaIndexManager.Instance.Delete(Enums.IndexDataType.MerchantProduct, areaID.Value, productID);
-                MerchantProductIndexManager.Instance.Delete(Enums.IndexDataType.MerchantProduct, areaID.Value, productID);
-            });
+                 AreaIndexManager.Instance.Delete(Enums.IndexDataType.MerchantProduct, areaID.Value, productID);
+                 MerchantProductIndexManager.Instance.Delete(Enums.IndexDataType.MerchantProduct, areaID.Value, productID);
+
+                 return true;
+             });
         }
 
         /**
@@ -160,15 +172,17 @@ namespace Td.Kylin.Search.WebApi.Controllers
         */
         [HttpPost("modify")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
-        public async void Modify(long productID)
+        public async Task<bool> ModifyAsync(long productID)
         {
-            await Task.Run(() =>
-            {
-                var item = MerchantProductProvider.GetMerchantProduct(productID);
+            return await Task.Run(() =>
+             {
+                 var item = MerchantProductProvider.GetMerchantProduct(productID);
 
-                AreaIndexManager.Instance.Modify(item);
-                MerchantProductIndexManager.Instance.Modify(item);
-            });
+                 AreaIndexManager.Instance.Modify(item);
+                 MerchantProductIndexManager.Instance.Modify(item);
+
+                 return true;
+             });
         }
 
         /**
@@ -202,18 +216,20 @@ namespace Td.Kylin.Search.WebApi.Controllers
         */
         [HttpPost("update")]
         [ApiAuthorization(Code = Kylin.WebApi.Models.Role.Admin | Kylin.WebApi.Models.Role.Editor)]
-        public async void Update(MerchantProduct item)
+        public async Task<bool> UpdateAsync(MerchantProduct item)
         {
-            await Task.Run(() =>
-            {
-                item.DataType = Enums.IndexDataType.MerchantProduct;
-                item.Pic = (item.Pic ?? string.Empty).Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
-                item.Desc = string.Empty;
-                item.UpdateTime = DateTime.Now;
-                
-                AreaIndexManager.Instance.Modify(item);
-                MerchantProductIndexManager.Instance.Modify(item);
-            });
+            return await Task.Run(() =>
+             {
+                 item.DataType = Enums.IndexDataType.MerchantProduct;
+                 item.Pic = (item.Pic ?? string.Empty).Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                 item.Desc = string.Empty;
+                 item.UpdateTime = DateTime.Now;
+
+                 AreaIndexManager.Instance.Modify(item);
+                 MerchantProductIndexManager.Instance.Modify(item);
+
+                 return true;
+             });
         }
     }
 }
